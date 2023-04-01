@@ -1,15 +1,7 @@
 import { Server } from "@hapi/hapi"
-import sql from 'mssql'
-
-const dbConfig: any = {
-    user: 'sa',
-    password: 'aspire@123',
-    server: 'localhost',
-    database: 'focaldb',
-    options: {
-        trustServerCertificate: true
-    }
-}
+import dbConfig from "./config/dbConfig"
+import sql, { pool } from "mssql"
+import routes from "./routes"
 
 export const init = async () => {
     const server: Server = new Server({
@@ -17,21 +9,14 @@ export const init = async () => {
         host: "localhost",
     })
 
-    server.route({
-        method: 'GET',
-        path: '/',
-        handler: function (req, h) {
-            return "Hi server connection"
-        }
-    })
+    routes(server)
 
-    const dbConnect = async () => {
+    const dbConnect = async() => {
         try {
-            let pool = await sql.connect(dbConfig)
-            let result = await pool.request()
-                .query('select * from Employee')
-            console.log("Result from db : ",result)
-        } catch (error) {
+            await sql.connect(dbConfig)
+            console.log("DB server connected")
+        } catch(error) {
+            console.log("error in catch : ", error)
             throw error
         }
     }
@@ -48,12 +33,3 @@ process.on('unhandledRejection', (error) => {
 })
 
 init()
-
-function vivo(arg0: string, vivo: any, arg2: string, VIVO: any, arg4: string) {
-    throw new Error("Function not implemented.")
-}
-
-
-function VIVO(arg0: string, vivo: any, arg2: string, VIVO: any, arg4: string) {
-    throw new Error("Function not implemented.")
-}

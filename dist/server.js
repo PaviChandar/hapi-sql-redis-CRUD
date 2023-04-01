@@ -14,36 +14,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.init = void 0;
 const hapi_1 = require("@hapi/hapi");
+const dbConfig_1 = __importDefault(require("./config/dbConfig"));
 const mssql_1 = __importDefault(require("mssql"));
-const dbConfig = {
-    user: 'sa',
-    password: 'aspire@123',
-    server: 'localhost',
-    database: 'focaldb',
-    options: {
-        trustServerCertificate: true
-    }
-};
+const routes_1 = __importDefault(require("./routes"));
 const init = () => __awaiter(void 0, void 0, void 0, function* () {
     const server = new hapi_1.Server({
         port: 4000,
         host: "localhost",
     });
-    server.route({
-        method: 'GET',
-        path: '/',
-        handler: function (req, h) {
-            return "Hi server connection";
-        }
-    });
+    (0, routes_1.default)(server);
     const dbConnect = () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            let pool = yield mssql_1.default.connect(dbConfig);
-            let result = yield pool.request()
-                .query('select * from Employee');
-            console.log("Result from db : ", result);
+            yield mssql_1.default.connect(dbConfig_1.default);
+            console.log("DB server connected");
         }
         catch (error) {
+            console.log("error in catch : ", error);
             throw error;
         }
     });
@@ -57,9 +43,3 @@ process.on('unhandledRejection', (error) => {
     process.exit(1);
 });
 (0, exports.init)();
-function vivo(arg0, vivo, arg2, VIVO, arg4) {
-    throw new Error("Function not implemented.");
-}
-function VIVO(arg0, vivo, arg2, VIVO, arg4) {
-    throw new Error("Function not implemented.");
-}

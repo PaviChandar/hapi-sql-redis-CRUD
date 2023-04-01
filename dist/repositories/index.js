@@ -1,0 +1,11 @@
+"use strict";
+CREATE;
+PROCEDURE;
+employeeList;
+AS;
+BEGIN;
+select;
+id, name, salary;
+from;
+employee;
+END;
