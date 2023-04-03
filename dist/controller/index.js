@@ -67,14 +67,20 @@ class EmployeeController {
         this.updateEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
             try {
                 console.log("inside update employee");
-                const employeeId = request.params.id;
-                console.log("employee id : ", employeeId);
+                const uid = request.params.id;
+                console.log("employee id : ", uid);
+                const employee = request.payload;
+                console.log("req payload emp : ", employee);
                 const pool = yield mssql_1.default.connect(dbConfig_1.default);
                 const result = yield pool.request()
-                    .input('empId', mssql_1.default.Int, employeeId)
+                    .input('uid', mssql_1.default.Int, uid)
+                    .input('uname', mssql_1.default.VarChar, employee.name)
+                    .input('uage', mssql_1.default.Int, employee.age)
+                    .input('ucity', mssql_1.default.VarChar, employee.city)
+                    .input('usalary', mssql_1.default.Int, employee.salary)
                     .execute('updateEmployeeById');
                 console.log("Result from update Employee : ", result);
-                return result.recordsets;
+                return result;
             }
             catch (error) {
                 console.log("Cannot update employee : ", error);

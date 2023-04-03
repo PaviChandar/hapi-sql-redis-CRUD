@@ -75,13 +75,12 @@ END
 
 EXEC updateEmployee @city = 'hiiiiii', @name = 'Pavi'
 
-CREATE PROCEDURE updateEmployeeById(@uid int)
+CREATE PROCEDURE updateEmployeeById
 AS
 BEGIN
+	declare @uid int
 	select * from employee where id = @uid
 END
-
-EXEC updateEmployeeById @uid = 3
 
 ALTER PROCEDURE updateEmployeeById(@uid int, @uname varchar(50), @uage int, @ucity varchar(50), @usalary int)
 AS
