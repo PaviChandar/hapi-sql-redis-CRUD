@@ -25,9 +25,7 @@ class EmployeeController {
 
     public getEmployee = async(request : Request) => {
         try {
-            console.log("inside getemp try")
             const employeeId = request.params.id
-            console.log("Employee id : ", employeeId)
             const pool = await sql.connect(dbConfig)
             const result = await pool.request()
                         .input('empId', sql.Int, employeeId)

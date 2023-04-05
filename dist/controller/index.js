@@ -36,14 +36,11 @@ class EmployeeController {
         });
         this.getEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log("inside getemp try");
                 const employeeId = request.params.id;
-                console.log("Employee id : ", employeeId);
                 const pool = yield mssql_1.default.connect(dbConfig_1.default);
                 const result = yield pool.request()
                     .input('empId', mssql_1.default.Int, employeeId)
                     .query('SELECT name from employee where id = @empId');
-                console.log("Result from getEmployee : ", result);
                 return result.recordsets;
             }
             catch (error) {
@@ -56,7 +53,6 @@ class EmployeeController {
                 const pool = yield mssql_1.default.connect(dbConfig_1.default);
                 const result = yield pool.request()
                     .query('select * from employee');
-                console.log("Result from getEmployees : ", result);
                 return result.recordsets;
             }
             catch (error) {
@@ -66,11 +62,8 @@ class EmployeeController {
         });
         this.updateEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log("inside update employee");
                 const uid = request.params.id;
-                console.log("employee id : ", uid);
                 const employee = request.payload;
-                console.log("req payload emp : ", employee);
                 const pool = yield mssql_1.default.connect(dbConfig_1.default);
                 const result = yield pool.request()
                     .input('uid', mssql_1.default.Int, uid)
@@ -79,8 +72,7 @@ class EmployeeController {
                     .input('ucity', mssql_1.default.VarChar, employee.city)
                     .input('usalary', mssql_1.default.Int, employee.salary)
                     .execute('updateEmployeeById');
-                console.log("Result from update Employee : ", result);
-                return result;
+                return result.recordsets;
             }
             catch (error) {
                 console.log("Cannot update employee : ", error);
@@ -90,17 +82,11 @@ class EmployeeController {
         this.deleteEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const employeeId = request.params.id;
-                if (employeeId === null) {
-                    return "Id not found!";
-                }
-                else {
-                    const pool = yield mssql_1.default.connect(dbConfig_1.default);
-                    const result = yield pool.request()
-                        .input('empId', mssql_1.default.Int, employeeId)
-                        .query('delete from employee where id = @empId');
-                    console.log("Result from deleteEmployee : ", result);
-                    return result;
-                }
+                const pool = yield mssql_1.default.connect(dbConfig_1.default);
+                const result = yield pool.request()
+                    .input('empId', mssql_1.default.Int, employeeId)
+                    .query('delete from employee where id = @empId');
+                return result;
             }
             catch (error) {
                 console.log("Cannot delete employee : ", error);
