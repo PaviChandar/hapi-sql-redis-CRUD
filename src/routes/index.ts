@@ -1,5 +1,5 @@
 import { Server } from "@hapi/hapi";
-import EmployeeController from "../controller";
+import EmployeeController from "../controller/EmployeeController";
 
 const employeeController = new EmployeeController()
 

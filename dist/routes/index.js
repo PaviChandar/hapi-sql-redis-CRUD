@@ -3,8 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const controller_1 = __importDefault(require("../controller"));
-const employeeController = new controller_1.default();
+const EmployeeController_1 = __importDefault(require("../controller/EmployeeController"));
+const employeeController = new EmployeeController_1.default();
 const routes = (server) => {
     server.route({
         method: 'GET',

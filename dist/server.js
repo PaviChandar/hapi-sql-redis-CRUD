@@ -14,8 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.init = void 0;
 const hapi_1 = require("@hapi/hapi");
-const dbConfig_1 = __importDefault(require("./config/dbConfig"));
-const mssql_1 = __importDefault(require("mssql"));
 const routes_1 = __importDefault(require("./routes"));
 const init = () => __awaiter(void 0, void 0, void 0, function* () {
     const server = new hapi_1.Server({
@@ -23,17 +21,6 @@ const init = () => __awaiter(void 0, void 0, void 0, function* () {
         host: "localhost",
     });
     (0, routes_1.default)(server);
-    const dbConnect = () => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            yield mssql_1.default.connect(dbConfig_1.default);
-            console.log("DB server connected");
-        }
-        catch (error) {
-            console.log("error in catch : ", error);
-            throw error;
-        }
-    });
-    dbConnect();
     yield server.start();
     console.log(`Server is running on port ${server.info.uri}`);
 });
