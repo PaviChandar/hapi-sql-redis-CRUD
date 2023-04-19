@@ -20,11 +20,10 @@ class EmployeeController {
         this.addEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
-                const validation = (0, validationSchema_1.userValidationSchema)(request.payload);
+                const validation = (0, validationSchema_1.employeeValidationSchema)(request.payload);
                 if ((_a = validation.error) === null || _a === void 0 ? void 0 : _a.isJoi) {
                     const errors = [];
                     validation.error.details.forEach((detail) => {
-                        console.log(detail.path.toString());
                         let error = {
                             [detail.path.toString()]: detail.message
                         };
@@ -51,7 +50,7 @@ class EmployeeController {
         this.updateEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
             var _b;
             try {
-                const validation = (0, validationSchema_1.userValidationSchema)(request.payload);
+                const validation = (0, validationSchema_1.employeeValidationSchema)(request.payload);
                 if ((_b = validation.error) === null || _b === void 0 ? void 0 : _b.isJoi) {
                     const errors = [];
                     validation.error.details.forEach((detail) => {
@@ -123,6 +122,7 @@ class EmployeeController {
     poolconnection() {
         return __awaiter(this, void 0, void 0, function* () {
             const pool = yield mssql_1.default.connect(dbConfig_1.default);
+            // const pool =  await new sqlInstance.ConnectionPool(dbConfig).connect()
             const result = yield pool.request();
             return result;
         });

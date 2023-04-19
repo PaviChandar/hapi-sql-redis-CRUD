@@ -4,7 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const EmployeeController_1 = __importDefault(require("../controller/EmployeeController"));
+const UserController_1 = __importDefault(require("../controller/UserController"));
 const employeeController = new EmployeeController_1.default();
+const userController = new UserController_1.default();
 const routes = (server) => {
     server.route({
         method: 'GET',
@@ -30,6 +32,11 @@ const routes = (server) => {
         method: 'PUT',
         path: '/api/employees/{id}',
         handler: employeeController.updateEmployee
+    });
+    server.route({
+        method: 'POST',
+        path: '/api/users',
+        handler: userController.addUser
     });
 };
 exports.default = routes;

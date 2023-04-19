@@ -1,7 +1,9 @@
 import { Server } from "@hapi/hapi";
 import EmployeeController from "../controller/EmployeeController";
+import UserController from "../controller/UserController";
 
 const employeeController = new EmployeeController()
+const userController = new UserController()
 
 const routes = (server : Server) => {
 
@@ -33,6 +35,12 @@ const routes = (server : Server) => {
             method:'PUT',
             path:'/api/employees/{id}',
             handler:employeeController.updateEmployee
+        })
+
+        server.route({
+            method:'POST',
+            path:'/api/users',
+            handler:userController.addUser
         })
 }
 

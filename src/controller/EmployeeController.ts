@@ -1,24 +1,25 @@
 import { Request } from "@hapi/hapi"
 import sql from "mssql"
+import sqlInstance from "mssql"
 import dbConfig from "../config/dbConfig"
 import { IEmployee } from "../interface/type"
-import { userValidationSchema } from "../validation/validationSchema"
+import { employeeValidationSchema } from "../validation/validationSchema"
 
 class EmployeeController {
 
-    public async poolconnection()  {
+    public async poolconnection() {
         const pool =  await sql.connect(dbConfig)
+        // const pool =  await new sqlInstance.ConnectionPool(dbConfig).connect()
         const result = await pool.request()
         return result
     }
 
     public addEmployee = async(request : Request) => {
         try {
-            const validation = userValidationSchema(request.payload)
+            const validation = employeeValidationSchema(request.payload)
                 if (validation.error?.isJoi) {
                     const errors: any = []
                     validation.error.details.forEach((detail) => {
-                        console.log(detail.path.toString())
                         let error: any = {
                             [detail.path.toString()]: detail.message
                         }
@@ -44,7 +45,7 @@ class EmployeeController {
 
     public updateEmployee = async(request : Request) => {
         try {
-            const validation = userValidationSchema(request.payload)
+            const validation = employeeValidationSchema(request.payload)
             if (validation.error?.isJoi) {
                 const errors: any = []
                 validation.error.details.forEach((detail) => {

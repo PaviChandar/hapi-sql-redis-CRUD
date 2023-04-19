@@ -1,7 +1,7 @@
 import Joi from "joi"
 
-export const userValidationSchema = (input: Object) => {
-    const userSchema = Joi.object(
+export const employeeValidationSchema = (input: Object) => {
+    const employeeSchema = Joi.object(
         {
             id: Joi.number()
                 .required(),
@@ -15,6 +15,23 @@ export const userValidationSchema = (input: Object) => {
                 .required(),
             salary: Joi.number()
                 .required()
+        }
+    )
+    return employeeSchema.validate(input)
+}
+
+export const userValidationSchema = (input: Object) => {
+    const userSchema = Joi.object(
+        {
+            username: Joi.string()
+                    .min(5)
+                    .required(),
+            email: Joi.string()
+                    .min(5)
+                    .required(),
+            password: Joi.string()
+                    .min(5)
+                    .required(),
         }
     )
     return userSchema.validate(input)

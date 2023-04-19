@@ -5,3 +5,9 @@ export interface IEmployee {
     city : string,
     salary : number
 }
+
+export interface IUser {
+    username : string,
+    email : string,
+    password: string
+}
