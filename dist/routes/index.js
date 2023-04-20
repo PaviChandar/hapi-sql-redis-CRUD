@@ -38,5 +38,10 @@ const routes = (server) => {
         path: '/api/users',
         handler: userController.addUser
     });
+    server.route({
+        method: 'POST',
+        path: '/api/login',
+        handler: userController.login
+    });
 };
 exports.default = routes;

@@ -1,15 +1,15 @@
 import { Request } from "@hapi/hapi"
 import sql from "mssql"
 import sqlInstance from "mssql"
-import dbConfig from "../config/dbConfig"
+import config from "../config/config"
 import { IEmployee } from "../interface/type"
 import { employeeValidationSchema } from "../validation/validationSchema"
 
 class EmployeeController {
 
     public async poolconnection() {
-        const pool =  await sql.connect(dbConfig)
-        // const pool =  await new sqlInstance.ConnectionPool(dbConfig).connect()
+        const pool =  await sql.connect(config)
+        // const pool =  await new sqlInstance.ConnectionPool(config).connect()
         const result = await pool.request()
         return result
     }

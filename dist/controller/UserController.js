@@ -13,8 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mssql_1 = __importDefault(require("mssql"));
-const dbConfig_1 = __importDefault(require("../config/dbConfig"));
 const validationSchema_1 = require("../validation/validationSchema");
+const token_1 = __importDefault(require("../utils/token"));
+const config_1 = __importDefault(require("../config/config"));
 class UserController {
     constructor() {
         this.addUser = (request) => __awaiter(this, void 0, void 0, function* () {
@@ -44,11 +45,25 @@ class UserController {
                 throw error;
             }
         });
+        this.login = (request) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const loginValue = request.payload;
+                const result = yield this.poolconnection();
+                const loginUser = yield result
+                    .input('lemail', mssql_1.default.NVarChar, loginValue.email)
+                    .execute('loginUser');
+                (0, token_1.default)(loginValue);
+                return loginUser.recordsets;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
     }
     poolconnection() {
         return __awaiter(this, void 0, void 0, function* () {
-            // const pool =  await new sqlInstance.ConnectionPool(dbConfig).connect()
-            const pool = yield mssql_1.default.connect(dbConfig_1.default);
+            // const pool =  await new sqlInstance.ConnectionPool(config).connect()
+            const pool = yield mssql_1.default.connect(config_1.default);
             const result = yield pool.request();
             return result;
         });

@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mssql_1 = __importDefault(require("mssql"));
-const dbConfig_1 = __importDefault(require("../config/dbConfig"));
+const config_1 = __importDefault(require("../config/config"));
 const validationSchema_1 = require("../validation/validationSchema");
 class EmployeeController {
     constructor() {
@@ -121,8 +121,8 @@ class EmployeeController {
     }
     poolconnection() {
         return __awaiter(this, void 0, void 0, function* () {
-            const pool = yield mssql_1.default.connect(dbConfig_1.default);
-            // const pool =  await new sqlInstance.ConnectionPool(dbConfig).connect()
+            const pool = yield mssql_1.default.connect(config_1.default);
+            // const pool =  await new sqlInstance.ConnectionPool(config).connect()
             const result = yield pool.request();
             return result;
         });

@@ -42,6 +42,12 @@ const routes = (server : Server) => {
             path:'/api/users',
             handler:userController.addUser
         })
+
+        server.route({
+            method:'POST',
+            path:'/api/login',
+            handler:userController.login
+        })
 }
 
 export default routes

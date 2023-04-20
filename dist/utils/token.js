@@ -12,27 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.init = void 0;
-const hapi_1 = require("@hapi/hapi");
-const routes_1 = __importDefault(require("./routes"));
-// import{ hapiPort, hapiHost } from "./config/config"
-const init = () => __awaiter(void 0, void 0, void 0, function* () {
-    const server = new hapi_1.Server({
-        port: 4000,
-        host: 'localhost',
-    });
-    (0, routes_1.default)(server);
-    yield server.start();
-    console.log(`Server is running on port ${server.info.uri}`);
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const createToken = (userdata) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = jsonwebtoken_1.default.sign({
+        name: userdata.username,
+        email: userdata.email
+    }, "secrettoken");
+    console.log("Token : ", token);
+    return token;
 });
-exports.init = init;
-process.on('unhandledRejection', (error) => {
-    console.log("Error in rejection : ", error);
-    process.exit(1);
-});
-(0, exports.init)();
-// console.log(db);
-// console.log(dbUser);
-// console.log(dbpassword);
-// console.log(dbport);
-// console.log(dbhost);
+exports.default = createToken;

@@ -1,10 +1,12 @@
 import { Server } from "@hapi/hapi"
 import routes from "./routes"
+// import{ hapiPort, hapiHost } from "./config/config"
 
 export const init = async () => {
+
     const server: Server = new Server({
         port: 4000,
-        host: "localhost",
+        host: 'localhost',
     })
 
     routes(server)
@@ -19,3 +21,9 @@ process.on('unhandledRejection', (error) => {
 })
 
 init()
+
+// console.log(db);
+// console.log(dbUser);
+// console.log(dbpassword);
+// console.log(dbport);
+// console.log(dbhost);

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const convict_1 = __importDefault(require("convict"));
-const dbConfig = (0, convict_1.default)({
+const config = (0, convict_1.default)({
     user: {
         doc: 'sa',
         format: String
@@ -14,22 +14,17 @@ const dbConfig = (0, convict_1.default)({
         format: String,
         sensitive: true
     },
-    // server: {
-    port: {
-        doc: 'localhost',
-        format: Number,
-        default: 1433
-    },
-    host: {
-        doc: 'localhost',
-        format: String,
-        default: 'localhost'
-    },
-    // },
     server: {
-        // doc: 'localhost',
-        format: String,
-        // default: 'localhost'
+        port: {
+            doc: 'localhost',
+            format: Number,
+            default: 1433
+        },
+        host: {
+            doc: 'localhost',
+            format: String,
+            default: 'localhost'
+        },
     },
     db: {
         name: {
@@ -39,64 +34,28 @@ const dbConfig = (0, convict_1.default)({
     },
     options: {
         trustServerCertificate: true
+    },
+    hapi: {
+        host: {
+            doc: 'localhost',
+            format: String,
+            default: 'localhost'
+        },
+        port: {
+            doc: 'localhost',
+            format: Number,
+            default: 4000
+        }
     }
 });
-exports.default = dbConfig;
-// const schema = {
-//     env: {
-//         doc: 'Environment that the application will run in',
-//         format: ['production', 'development', 'test'],
-//         default: 'development',
-//         env: 'NODE_ENV',
-//     },
-//     port: {
-//         doc: 'HTTP port n8n can be reached',
-//         format: Number,
-//         default: 1433,
-//         env: 'PORT',
-//         arg: 'port',
-//       },
-//     db: {
-//         host: {
-//           doc: 'Database host name/IP address',
-//           format: '*',
-//           default: 'localhost',
-//         },
-//         name: {
-//           doc: 'Database name',
-//           format: String,
-//           default: 'Employee',
-//         },
-//     },
-// }
-// const dbConfig = convict(schema)
-// const port = dbConfig.get('port')
-// console.log("port : ", port)
-// export default dbConfig
-// const dbConfig = convict({
-//     dbs:{
-//         db1: {
-//             host: {
-//                 doc: 'localhost',
-//                 format: '*',
-//                 default: 'localhost'
-//             },
-//             user:{
-//                 doc: 'sa',
-//                 format: String
-//             },
-//             pass: {
-//                 doc: 'Aspire@123',
-//                 format: String,
-//                 sensitive: true
-//             },
-//             name: {
-//                 doc: 'Employee',
-//                 format: String,
-//                 default: 'users'
-//             }
-//         }
+// const config: any = {
+//     user: 'sa',
+//     password: 'Aspire@123',
+//     port: 1433,
+//     server: 'localhost',
+//     database: 'Employee',
+//     options: {
+//         trustServerCertificate: true
 //     }
-// })
-// dbConfig.validate({allowed : 'strict'})
-// export default dbConfig
+// }
+exports.default = config;

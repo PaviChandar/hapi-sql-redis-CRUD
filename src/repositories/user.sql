@@ -14,9 +14,25 @@ CREATE PROCEDURE insertUser
 )
 AS
 BEGIN
-	INSERT INTO Users(username,email,passwordhash)
-	VALUES (@iUsername, @iEmail, HASHBYTES('SHA2_512',@iPassword))
+	DECLARE @iPasswordhash nvarchar(100)
+	INSERT INTO Users(username,email,passwordhash,userpassword)
+	VALUES (@iUsername, @iEmail, HASHBYTES('SHA2_512',@iPassword), @iPassword)
+END
+EXEC insertUser @iUsername = 'sample', @iEmail = 'sample@gmail.com', @iPassword = 'sample123'
+
+
+CREATE PROCEDURE loginUser
+	@lemail varchar(100)
+AS
+BEGIN
+	IF EXISTS(select email from Users where email = @lemail)
+		BEGIN
+			select username,email,userpassword from Users where email = @lemail
+		END
+	ELSE
+		BEGIN
+			PRINT 'Cant login'
+		END
 END
 
-EXEC insertUser @iUsername = 'Sneha', @iEmail = 'snehasaravana@gmail.com', @iPassword = 'sneha0612'
-EXEC insertUser @iUsername = 'Mira', @iEmail = 'mirashankar@gmail.com', @iPassword = 'mira3010'
+EXEC loginUser @lemail = 'snehasaravana@gmail.com'
