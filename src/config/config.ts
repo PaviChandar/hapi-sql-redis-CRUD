@@ -1,87 +1,82 @@
-// import convict from "convict"
+import convict from "convict"
 
-// const config: any = convict( 
-//     {
-//         user: {
-//             doc: 'sa',
-//             format: String,
-//             default:'sa'
-//         },
-//         password: {
-//             doc: 'Aspire@123',
-//             format: String,
-//             default: 'Aspire@123',
-//             sensitive : true
-//         },
-//         server:'localhost' ,
-//         port: {
-//             doc: 'port to bind',
-//             format: 'port',
-//             default: 1433
-//         },
-//         host: {
-//             doc: 'localhost',
-//             format: String,
-//             default: 'localhost'
-//         },
-//         db: {
-//             host: {
-//                 doc: 'localhost',
-//                 format: String,
-//                 default: 'localhost'
-//             },
-//             name: {
-//                 doc: 'Employee',
-//                 format: String,
-//                 default: 'Employee'
-//             }
-//         },
-//         options: {
-//             trustServerCertificate: true
-//         },
-//         hapi: {
-//             host: {
-//                 doc:'localhost',
-//                 format: String,
-//                 default: 'localhost'
-//             },
-//             port: {
-//                 doc:'port to bind',
-//                 format: 'port',
-//                 default: 4000
-//             }
-//         }
-//     }
-// )
+const config: any = convict( 
+    {
+        db: {
+            server: {
+                doc: 'Database host',
+			    format: '*',
+			    default: 'localhost',
+			    env: 'server',
+            },
+            port: {
+                doc: 'DB port',
+                format: Number,
+                default: 1433,
+                env: 'port',
+            },
+            database: {
+                doc: 'Database name',
+                format: String,
+                default: 'Employee',
+                env: 'database',
+            },
+            user: {
+                doc: ' username',
+                format: String,
+                default: 'sa',
+                env: 'user',
+            },
+            password: {
+                doc: 'database password',
+                format: String,
+                default: 'Aspire@123',
+                env: 'password',
+            },
+            options: {
+                trustServerCertificate: {
+                    doc: 'options',
+                    format: Boolean,
+                    default: true,
+                }
+            }
+        },
+        hapi: {
+            host: {
+                doc:'localhost',
+                format: String,
+                default: 'localhost'
+            },
+            port: {
+                doc:'port to bind',
+                format: 'port',
+                default: 4000
+            }
+        }
+    }
+)
 
-// export const hapiPort = config.get('hapi.port')
-// export const hapiHost = config.get('hapi.host')
+export const hapiPort = config.get('hapi.port')
+export const hapiHost = config.get('hapi.host')
+config.loadFile('.env')
+
 // const dbport = config.get('port')
-//  const dbhost = config.get('host')
-//  const dbUser = config.get('user')
-//  const dbpassword = config.get('password')
-//  const db = config.get('db.name')
+// console.log("dbport : ", dbport)
+// const dbUser = config.get('user')
+// const dbpassword = config.get('password')
+// const dbServer = config.get('server')
+// const db = config.get('db.name')
 
-// export const dbConfig = {
-//     port: dbport, 
-//     host: dbhost,
+// export const dbConfig = { 
 //     user: dbUser, 
 //     password: dbpassword, 
-//     database: db
+//     port: dbport,
+//     server: dbServer,
+//     database: db,
+//     options: {
+//         trustServerCertificate: true
+//     }
 // }
-
-// console.log("dbconfig port : ", dbConfig.port)
-
-const config: any = {
-    user: 'sa',
-    password: 'Aspire@123',
-    port: 1433,
-    server: 'localhost',
-    database: 'Employee',
-    options: {
-        trustServerCertificate: true
-    }
-}
 
 export default config
 

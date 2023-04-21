@@ -18,6 +18,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/convict": "^6.1.1",
     "@types/node": "^18.15.10",
+    "bcryptjs": "^2.4.3",
     "convict": "^6.2.4",
     "dotenv": "^16.0.3",
     "joi": "^17.9.1",

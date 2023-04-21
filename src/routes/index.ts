@@ -44,9 +44,9 @@ const routes = (server : Server) => {
         })
 
         server.route({
-            method:'POST',
-            path:'/api/login',
-            handler:userController.login
+            method: 'POST',
+            path: '/api/login',
+            handler: userController.login
         })
 }
 

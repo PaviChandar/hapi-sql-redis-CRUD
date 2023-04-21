@@ -1,24 +1,25 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.accessToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const createToken = (userdata) => __awaiter(void 0, void 0, void 0, function* () {
+// const createToken = async(userdata:any) => {
+//     const token = jwt.sign(
+//         {
+//             name: userdata.username,
+//             email: userdata.email
+//         },
+//         "secrettoken"
+//     )
+//     return token
+// }
+// export default createToken
+const accessToken = (userId) => {
     const token = jsonwebtoken_1.default.sign({
-        name: userdata.username,
-        email: userdata.email
-    }, "secrettoken");
-    console.log("Token : ", token);
+        id: userId
+    }, "secret_token");
     return token;
-});
-exports.default = createToken;
+};
+exports.accessToken = accessToken;

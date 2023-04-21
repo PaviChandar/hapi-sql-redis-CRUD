@@ -8,19 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mssql_1 = __importDefault(require("mssql"));
-const config_1 = __importDefault(require("../config/config"));
+const userQuery_1 = require("../repositories/userQuery");
 const validationSchema_1 = require("../validation/validationSchema");
+const query = new userQuery_1.UserQuery;
 class EmployeeController {
     constructor() {
-        this.addEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
+        this.addEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
-                const validation = (0, validationSchema_1.employeeValidationSchema)(request.payload);
+                const validation = (0, validationSchema_1.employeeValidationSchema)(req.payload);
                 if ((_a = validation.error) === null || _a === void 0 ? void 0 : _a.isJoi) {
                     const errors = [];
                     validation.error.details.forEach((detail) => {
@@ -31,26 +28,19 @@ class EmployeeController {
                     });
                     return errors;
                 }
-                const employee = request.payload;
-                const result = yield this.poolconnection();
-                const newEmployee = yield result
-                    .input('id', mssql_1.default.Int, employee.id)
-                    .input('name', mssql_1.default.VarChar, employee.name)
-                    .input('age', mssql_1.default.Int, employee.age)
-                    .input('city', mssql_1.default.VarChar, employee.city)
-                    .input('salary', mssql_1.default.Int, employee.salary)
-                    .execute('insertEmployee');
-                return newEmployee.recordsets;
+                const employee = req.payload;
+                const data = yield query.addEmployeeQuery(employee);
+                return res.response(data.recordset[0]);
             }
             catch (error) {
                 console.log("Cannot add employee : ", error);
                 throw error;
             }
         });
-        this.updateEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
+        this.updateEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
             var _b;
             try {
-                const validation = (0, validationSchema_1.employeeValidationSchema)(request.payload);
+                const validation = (0, validationSchema_1.employeeValidationSchema)(req.payload);
                 if ((_b = validation.error) === null || _b === void 0 ? void 0 : _b.isJoi) {
                     const errors = [];
                     validation.error.details.forEach((detail) => {
@@ -61,70 +51,49 @@ class EmployeeController {
                     });
                     return errors;
                 }
-                const uid = request.params.id;
-                const employee = request.payload;
-                const result = yield this.poolconnection();
-                const updatedEmployee = yield result
-                    .input('uid', mssql_1.default.Int, uid)
-                    .input('uname', mssql_1.default.VarChar, employee.name)
-                    .input('uage', mssql_1.default.Int, employee.age)
-                    .input('ucity', mssql_1.default.VarChar, employee.city)
-                    .input('usalary', mssql_1.default.Int, employee.salary)
-                    .execute('updateEmployeeById');
-                return updatedEmployee.recordsets;
+                const uid = req.params.id;
+                const employee = req.payload;
+                const data = yield query.updateEmployeeQuery(uid, employee);
+                return res.response(data.recordset[0]);
             }
             catch (error) {
                 console.log("Cannot update employee : ", error);
                 throw error;
             }
         });
-        this.getEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
+        this.getEmployee = (request, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const eid = request.params.id;
-                const result = yield this.poolconnection();
-                const getemployee = yield result
-                    .input('eid', mssql_1.default.Int, eid)
-                    .execute('getEmployeeById');
-                return getemployee.recordsets;
+                const data = yield query.getSingleUserQuery(eid);
+                return res.response(data.recordset[0]);
             }
             catch (error) {
                 console.log("Cannot get employee : ", error);
                 throw error;
             }
         });
-        this.getEmployees = () => __awaiter(this, void 0, void 0, function* () {
+        this.getEmployees = (res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.poolconnection();
-                const getemployees = yield result
-                    .execute('getAllEmployee');
-                return getemployees.recordsets;
+                const data = yield query.getUsersQuery();
+                return res.response(data.recordset);
             }
             catch (error) {
-                console.log("Cannot get employees : ", error);
+                console.log("Error in getEmployee : ", error);
                 throw error;
             }
         });
-        this.deleteEmployee = (request) => __awaiter(this, void 0, void 0, function* () {
+        this.deleteEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const did = request.params.id;
-                const result = yield this.poolconnection();
-                const removeEmployee = yield result
-                    .input('did', mssql_1.default.Int, did)
-                    .execute('deleteEmployeeById');
-                return removeEmployee.recordsets;
+                const did = req.params.id;
+                console.log("delete id : ", did);
+                const data = yield query.deleteEmployeeQuery(did);
+                console.log(data);
+                return res.response(data.recordset[0]);
             }
             catch (error) {
                 console.log("Cannot delete employee : ", error);
                 throw error;
             }
-        });
-    }
-    poolconnection() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const pool = yield mssql_1.default.connect(config_1.default);
-            // const pool =  await new sqlInstance.ConnectionPool(config).connect()
-            const result = yield pool.request();
-            return result;
         });
     }
 }

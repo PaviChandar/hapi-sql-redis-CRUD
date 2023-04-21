@@ -1,14 +1,24 @@
 import jwt from "jsonwebtoken"
 
-const createToken = async(userdata:any) => {
+// const createToken = async(userdata:any) => {
+//     const token = jwt.sign(
+//         {
+//             name: userdata.username,
+//             email: userdata.email
+//         },
+//         "secrettoken"
+//     )
+//     return token
+// }
+
+// export default createToken
+
+export const accessToken = (userId : number) => {
     const token = jwt.sign(
         {
-            name: userdata.username,
-            email: userdata.email
+            id : userId
         },
-        "secrettoken"
+        "secret_token"
     )
     return token
 }
-
-export default createToken

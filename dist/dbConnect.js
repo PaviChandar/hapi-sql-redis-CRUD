@@ -12,22 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.init = void 0;
-const hapi_1 = require("@hapi/hapi");
-const routes_1 = __importDefault(require("./routes"));
-const config_1 = require("./config/config");
-const init = () => __awaiter(void 0, void 0, void 0, function* () {
-    const server = new hapi_1.Server({
-        port: config_1.hapiPort,
-        host: config_1.hapiHost,
-    });
-    (0, routes_1.default)(server);
-    yield server.start();
-    console.log(`Server is running on port ${server.info.uri}`);
-});
-exports.init = init;
-process.on('unhandledRejection', (error) => {
-    console.log("Error in rejection : ", error);
-    process.exit(1);
-});
-(0, exports.init)();
+const mssql_1 = __importDefault(require("mssql"));
+const config_1 = __importDefault(require("./config/config"));
+class DatabaseConnection {
+    constructor() {
+        (() => __awaiter(this, void 0, void 0, function* () {
+            const data = yield new mssql_1.default.ConnectionPool(config_1.default).connect();
+            this.pool = data.request();
+            return this.pool;
+        }));
+    }
+}
+exports.default = DatabaseConnection;

@@ -1,23 +1,18 @@
-import { Request } from "@hapi/hapi"
-import sql from "mssql"
-import sqlInstance from "mssql"
-// import { dbConfig }  from "../config/config"
+import { Request, ResponseToolkit } from "@hapi/hapi"
 import { IUser } from "../interface/type"
 import { userValidationSchema } from "../validation/validationSchema"
-import createToken from "../utils/token"
-import config from "../config/config"
+import { UserQuery } from "../repositories/userQuery"
+import bcrypt, { genSalt } from "bcryptjs"
+import { accessToken } from "../utils/token"
+import { LOGIN_FAILURE, LOGIN_SUCCESS, PASSWORD_INCORRECT } from "../constants/constants"
+
+const query = new UserQuery
 
 class UserController {
-    public async poolconnection()  {
-        // const pool =  await new sqlInstance.ConnectionPool(config).connect()
-        const pool =  await sql.connect(config)
-        const result = await pool.request()
-        return result
-    }
 
-    public addUser = async(request : Request) => {
+    public addUser = async(req : Request, res : ResponseToolkit) => {
         try {
-            const validation = userValidationSchema(request.payload)
+            const validation = userValidationSchema(req.payload)
             if (validation.error) {
                 const errors: any = []
                 validation.error.details.forEach((detail) => {
@@ -28,33 +23,67 @@ class UserController {
                 })            
                 return errors
             }
-            const user = request.payload as IUser
-            const result = await this.poolconnection()
-            const newUser = await result
-                            .input('iUsername', sql.NVarChar, user.username)
-                            .input('iEmail', sql.NVarChar, user.email)
-                            .input('iPassword', sql.NVarChar, user.password)
-                            .execute('insertUser')
-            return newUser.recordsets
+            const user = req.payload as IUser
+            const userpw = user.password
+            const saltRounds = 10
+            const hashpw = await bcrypt.hash(userpw, saltRounds)
+            console.log("Hash pw in adduser : ", hashpw)
+            const data = await query.addUserQuery(user)
+            console.log("data of user : ", data.recordset[0])
+            return res.response(data.recordset[0])       
         } catch (error) {
             console.log("Cannot add user : ", error)
             throw error
         }
     }
 
-    public login = async(request: Request) => {
-        try {
-            const loginValue = request.payload as IUser
-            const result = await this.poolconnection()
-            const loginUser = await result
-                            .input('lemail', sql.NVarChar, loginValue.email)
-                            .execute('loginUser')
-            createToken(loginValue)
-            return loginUser.recordsets
-        } catch (error) {
-            throw error
-        }
+    public login = async(req: Request, res: ResponseToolkit) => {
+        // try {
+            const user = req.payload as IUser
+            const userpw = user.password
+            const saltRounds = 10
+            // const hashpw = bcrypt.hash(userpw, saltRounds)
+            //                      .then(hash => {
+            //                      console.log('Hash ', hash)
+            //                     })
+            //                      .catch(err => console.error(err.message))
+            console.log("user pw : ", userpw)
+            
+            const loginData = await query.loginUserQuery(user.email)
+            const hashpass = JSON.stringify(loginData.recordset[0].passwordhash)
+            console.log("hash : ", hashpass)
+            const comparepw = await bcrypt.compare(userpw, hashpass)
+            console.log("compared pw : ", comparepw)
+            // if(loginData) {
+            //     res.response({ message : LOGIN_FAILURE })
+            //    const data= await bcrypt.compare(loginData.recordset[0].userpassword, hashpw)
+            //    console.log(data)
+            //     const access = accessToken(loginData.recordset[0].id)
+            //     return res.response({ message: LOGIN_SUCCESS, data: loginData.recordset[0], access })
+            // }
+            // console.log(loginData.recordsets['userpassword'])
+            // const passwordValidation = async() => {
+            //     console.log("inside pw validation")
+            //     const validatePassword = await bcrypt.compare(user.password, loginData.recordset[0].userpassword)
+            //                                          .then(res => {
+            //                                             console.log("response : ",res)
+            //                                         })
+            //                                          .catch(err => console.error("error msg : ",err.message))
+            //     console.log(user.password)
+            //     console.log('loginData',loginData.recordset[0].userpassword)
+            //     console.log(validatePassword)
+                // if(!validatePassword) {
+                //     return res.response({ message : PASSWORD_INCORRECT})
+                // }
+            }
+            // passwordValidation()
+            
+        // } catch(error) {
+        //     console.log("Cannot login user : ", error)
+        //     throw "Cannot login User"
+        // }
     }
-}
+
 
 export default UserController
+
