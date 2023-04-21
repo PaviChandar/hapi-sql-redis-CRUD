@@ -42,9 +42,9 @@ class UserQuery {
             return yield this.pool.query('exec updateEmployeeById @uid="' + uid + '", @uname="' + userData.name + '", @uage="' + userData.age + '", @ucity="' + userData.city + '", @usalary="' + userData.salary + '"');
         });
     }
-    addUserQuery(data) {
+    addUserQuery(data, hashedPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.pool.query('exec insertUser @iUsername="' + data.username + '", @iEmail="' + data.email + '", @iPassword="' + data.password + '"');
+            return yield this.pool.query('exec insertUser @iUsername="' + data.username + '", @iEmail="' + data.email + '", @iPassword="' + hashedPassword + '"     ');
         });
     }
     loginUserQuery(email) {

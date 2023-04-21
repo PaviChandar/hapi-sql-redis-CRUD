@@ -31,7 +31,7 @@ AS
 BEGIN
 	IF EXISTS(select email from Users where email = @lemail)
 		BEGIN
-			select username,email,userpassword,passwordhash from Users where email = @lemail
+			select username,email,userpassword from Users where email = @lemail
 		END
 	ELSE
 		BEGIN

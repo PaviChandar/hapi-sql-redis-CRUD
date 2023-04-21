@@ -34,9 +34,9 @@ export class UserQuery {
         )
     }
 
-    public async addUserQuery(data : IUser) {
+    public async addUserQuery(data : IUser, hashedPassword : string) {
         return await this.pool.query(
-            'exec insertUser @iUsername="' + data.username + '", @iEmail="' + data.email + '", @iPassword="' + data.password + '"'
+            'exec insertUser @iUsername="' + data.username + '", @iEmail="' + data.email + '", @iPassword="' + hashedPassword + '"     '
         )
     }
 

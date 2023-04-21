@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const validationSchema_1 = require("../validation/validationSchema");
 const userQuery_1 = require("../repositories/userQuery");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const token_1 = require("../utils/token");
+const constants_1 = require("../constants/constants");
 const query = new userQuery_1.UserQuery;
 class UserController {
     constructor() {
@@ -34,14 +36,8 @@ class UserController {
                 const user = req.payload;
                 const userpw = user.password;
                 const saltRounds = 10;
-                const hashpw = yield bcryptjs_1.default.hash(userpw, saltRounds);
-                // .then(hash => {
-                // console.log('Hash ', hash)
-                // })
-                // .catch(err => console.error(err.message))
-                console.log("Hash pw in adduser : ", hashpw);
-                const data = yield query.addUserQuery(user);
-                console.log("data of user : ", data.recordset[0]);
+                const hashedpassword = yield bcryptjs_1.default.hash(userpw, saltRounds);
+                const data = yield query.addUserQuery(user, hashedpassword);
                 return res.response(data.recordset[0]);
             }
             catch (error) {
@@ -50,48 +46,33 @@ class UserController {
             }
         });
         this.login = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            // try {
-            const user = req.payload;
-            const userpw = user.password;
-            const saltRounds = 10;
-            // const hashpw = bcrypt.hash(userpw, saltRounds)
-            //                      .then(hash => {
-            //                      console.log('Hash ', hash)
-            //                     })
-            //                      .catch(err => console.error(err.message))
-            console.log("user pw : ", userpw);
-            const loginData = yield query.loginUserQuery(user.email);
-            const hashpass = JSON.stringify(loginData.recordset[0].passwordhash);
-            console.log("hash : ", hashpass);
-            const comparepw = yield bcryptjs_1.default.compare(userpw, hashpass);
-            console.log("compared pw : ", comparepw);
-            // if(loginData) {
-            //     res.response({ message : LOGIN_FAILURE })
-            //    const data= await bcrypt.compare(loginData.recordset[0].userpassword, hashpw)
-            //    console.log(data)
-            //     const access = accessToken(loginData.recordset[0].id)
-            //     return res.response({ message: LOGIN_SUCCESS, data: loginData.recordset[0], access })
-            // }
-            // console.log(loginData.recordsets['userpassword'])
-            // const passwordValidation = async() => {
-            //     console.log("inside pw validation")
-            //     const validatePassword = await bcrypt.compare(user.password, loginData.recordset[0].userpassword)
-            //                                          .then(res => {
-            //                                             console.log("response : ",res)
-            //                                         })
-            //                                          .catch(err => console.error("error msg : ",err.message))
-            //     console.log(user.password)
-            //     console.log('loginData',loginData.recordset[0].userpassword)
-            //     console.log(validatePassword)
-            // if(!validatePassword) {
-            //     return res.response({ message : PASSWORD_INCORRECT})
-            // }
+            try {
+                const user = req.payload;
+                console.log("user email : ", user.email);
+                const userEmail = user.email;
+                const userPassword = user.password;
+                const loginData = yield query.loginUserQuery(userEmail);
+                console.log("Logindata : ", loginData);
+                if (!loginData.recordset) {
+                    console.log("inside if");
+                    console.log("Login failed for user");
+                    return res.response({ message: constants_1.LOGIN_FAILURE });
+                }
+                console.log("Payload pw : ", userPassword);
+                console.log("db pw : ", loginData.recordset[0].userpassword);
+                const validatePassword = yield bcryptjs_1.default.compare(userPassword, loginData.recordset[0].userpassword);
+                console.log("match : ", validatePassword);
+                if (!validatePassword) {
+                    return res.response({ message: constants_1.PASSWORD_INCORRECT });
+                }
+                const tokenwithid = (0, token_1.accessToken)(loginData.recordset[0].id);
+                return res.response({ message: constants_1.LOGIN_SUCCESS, data: loginData.recordset[0], tokenwithid });
+            }
+            catch (error) {
+                console.log("Cannot login employee");
+                throw error;
+            }
         });
-        // passwordValidation()
-        // } catch(error) {
-        //     console.log("Cannot login user : ", error)
-        //     throw "Cannot login User"
-        // }
     }
 }
 exports.default = UserController;
