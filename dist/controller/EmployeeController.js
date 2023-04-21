@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const httpCode_1 = require("../constants/httpCode");
 const userQuery_1 = require("../repositories/userQuery");
 const validationSchema_1 = require("../validation/validationSchema");
 const query = new userQuery_1.UserQuery;
@@ -30,11 +31,11 @@ class EmployeeController {
                 }
                 const employee = req.payload;
                 const data = yield query.addEmployeeQuery(employee);
-                return res.response(data.recordset[0]);
+                return res.response(data.recordset[0]).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 console.log("Cannot add employee : ", error);
-                throw error;
+                return res.response({ message: "Cannot add employee " }).code(httpCode_1.BAD_REQUEST);
             }
         });
         this.updateEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -54,45 +55,43 @@ class EmployeeController {
                 const uid = req.params.id;
                 const employee = req.payload;
                 const data = yield query.updateEmployeeQuery(uid, employee);
-                return res.response(data.recordset[0]);
+                return res.response(data.recordset[0]).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 console.log("Cannot update employee : ", error);
-                throw error;
+                return res.response({ message: "Cannot update employee " }).code(httpCode_1.BAD_REQUEST);
             }
         });
         this.getEmployee = (request, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const eid = request.params.id;
                 const data = yield query.getSingleUserQuery(eid);
-                return res.response(data.recordset[0]);
+                return res.response(data.recordset[0]).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 console.log("Cannot get employee : ", error);
-                throw error;
+                return res.response({ message: "Cannot get employee " }).code(httpCode_1.BAD_REQUEST);
             }
         });
         this.getEmployees = (res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = yield query.getUsersQuery();
-                return res.response(data.recordset);
+                return res.response(data.recordset).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 console.log("Error in getEmployee : ", error);
-                throw error;
+                return res.response({ message: "Cannot get employees " }).code(httpCode_1.BAD_REQUEST);
             }
         });
         this.deleteEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const did = req.params.id;
-                console.log("delete id : ", did);
                 const data = yield query.deleteEmployeeQuery(did);
-                console.log(data);
-                return res.response(data.recordset[0]);
+                return res.response(data.recordset[0]).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 console.log("Cannot delete employee : ", error);
-                throw error;
+                return res.response({ message: "Cannot delete employee " }).code(httpCode_1.BAD_REQUEST);
             }
         });
     }
