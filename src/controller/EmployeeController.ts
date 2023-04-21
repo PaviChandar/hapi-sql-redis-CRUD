@@ -1,4 +1,5 @@
 import { Request, ResponseToolkit } from "@hapi/hapi"
+import { SUCCESS, BAD_REQUEST } from "../constants/httpCode"
 import { IEmployee } from "../interface/type"
 import { UserQuery } from "../repositories/userQuery"
 import { employeeValidationSchema } from "../validation/validationSchema"
@@ -22,10 +23,10 @@ class EmployeeController {
                 }
             const employee = req.payload as IEmployee
             const data = await query.addEmployeeQuery(employee)
-            return res.response(data.recordset[0])
+            return res.response(data.recordset[0]).code(SUCCESS)
         } catch (error) {
             console.log("Cannot add employee : ", error)
-            throw error
+            return res.response({ message : "Cannot add employee "}).code(BAD_REQUEST)
         }
     }
 
@@ -46,10 +47,10 @@ class EmployeeController {
             const uid = req.params.id   
             const employee = req.payload as IEmployee
             const data = await query.updateEmployeeQuery(uid, employee)
-            return res.response(data.recordset[0])
+            return res.response(data.recordset[0]).code(SUCCESS)
         } catch (error) {
             console.log("Cannot update employee : ", error)
-            throw error
+            return res.response({ message : "Cannot update employee "}).code(BAD_REQUEST)
         }
     }
 
@@ -57,33 +58,31 @@ class EmployeeController {
         try {
             const eid = request.params.id
             const data = await query.getSingleUserQuery(eid)
-            return res.response(data.recordset[0])
+            return res.response(data.recordset[0]).code(SUCCESS)
         } catch (error) {
             console.log("Cannot get employee : ", error)
-            throw error
+            return res.response({ message : "Cannot get employee "}).code(BAD_REQUEST)
         }
     }
 
     public getEmployees = async(res : ResponseToolkit) => {
         try {
             const data = await query.getUsersQuery()
-            return res.response(data.recordset)
+            return res.response(data.recordset).code(SUCCESS)
         } catch(error) {
             console.log("Error in getEmployee : ", error)
-            throw error
+            return res.response({ message : "Cannot get employees "}).code(BAD_REQUEST)
         }
     }
 
     public deleteEmployee = async(req: Request, res: ResponseToolkit) => {
         try {
             const did = req.params.id  
-            console.log("delete id : ", did)
             const data = await query.deleteEmployeeQuery(did)
-            console.log(data)
-            return res.response(data.recordset[0])
+            return res.response(data.recordset[0]).code(SUCCESS)
         } catch (error) {
             console.log("Cannot delete employee : ", error)
-            throw error
+            return res.response({ message : "Cannot delete employee " }).code(BAD_REQUEST)
         }
     }
 }
