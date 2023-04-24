@@ -20,7 +20,6 @@ export class UserQuery {
 
     public async addEmployeeQuery(userData : IEmployee) {
         return await this.pool.query(
-            console.log("pool"),
             'exec insertEmployee @id="' + userData.id + '", @name="' + userData.name + '", @age="' + userData.age + '", @city="' + userData.city + '", @salary="' + userData.salary + '"'
         )
     }
