@@ -65,10 +65,10 @@ class EmployeeController {
         }
     }
 
-    public getEmployees = async(res : ResponseToolkit) => {
+    public getEmployees = async(req: Request, res : ResponseToolkit) => {
         try {
             const data = await query.getUsersQuery()
-            return res.response(data.recordset).code(SUCCESS)
+            return res.response({ data: data.recordset }).code(SUCCESS)
         } catch(error) {
             console.log("Error in getEmployee : ", error)
             return res.response({ message : "Cannot get employees "}).code(BAD_REQUEST)

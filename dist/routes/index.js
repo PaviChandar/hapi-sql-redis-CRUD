@@ -11,7 +11,7 @@ const routes = (server) => {
     server.route({
         method: 'GET',
         path: '/api/employees',
-        handler: employeeController.getEmployees
+        handler: employeeController.getEmployees,
     });
     server.route({
         method: 'GET',

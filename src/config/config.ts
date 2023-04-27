@@ -52,6 +52,10 @@ const config: any = convict(
                 format: 'port',
                 default: 4000
             }
+        },
+        cors: {
+            origin: ['*'],
+            additionalHeaders: ['cache-control', 'x-requested-with']
         }
     }
 )

@@ -1,12 +1,21 @@
 import { Server } from "@hapi/hapi"
 import routes from "./routes"
-import{ hapiPort, hapiHost } from "./config/config"
+import { hapiPort, hapiHost } from "./config/config"
 
 export const init = async () => {
 
     const server: Server = new Server({
         port: hapiPort,
         host: hapiHost,
+        routes: {
+            cors: {
+                origin: ['*'],
+                headers: ['Authorization'], 
+                exposedHeaders: ['Accept'], 
+                additionalExposedHeaders: ['Accept'], 
+                credentials: true
+            }
+        }
     })
 
     routes(server)

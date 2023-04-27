@@ -73,10 +73,10 @@ class EmployeeController {
                 return res.response({ message: "Cannot get employee " }).code(httpCode_1.BAD_REQUEST);
             }
         });
-        this.getEmployees = (res) => __awaiter(this, void 0, void 0, function* () {
+        this.getEmployees = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = yield query.getUsersQuery();
-                return res.response(data.recordset).code(httpCode_1.SUCCESS);
+                return res.response({ data: data.recordset }).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 console.log("Error in getEmployee : ", error);

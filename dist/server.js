@@ -20,6 +20,15 @@ const init = () => __awaiter(void 0, void 0, void 0, function* () {
     const server = new hapi_1.Server({
         port: config_1.hapiPort,
         host: config_1.hapiHost,
+        routes: {
+            cors: {
+                origin: ['*'],
+                headers: ['Authorization'],
+                exposedHeaders: ['Accept'],
+                additionalExposedHeaders: ['Accept'],
+                credentials: true
+            }
+        }
     });
     (0, routes_1.default)(server);
     yield server.start();

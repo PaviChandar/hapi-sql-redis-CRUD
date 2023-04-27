@@ -1,4 +1,5 @@
 import { Server } from "@hapi/hapi";
+import config from "../config/config";
 import EmployeeController from "../controller/EmployeeController";
 import UserController from "../controller/UserController";
 
@@ -10,7 +11,7 @@ const routes = (server : Server) => {
         server.route({
             method:'GET',
             path:'/api/employees',
-            handler: employeeController.getEmployees
+            handler: employeeController.getEmployees,
         })
 
         server.route({

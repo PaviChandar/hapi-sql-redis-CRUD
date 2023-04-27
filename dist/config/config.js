@@ -56,25 +56,13 @@ const config = (0, convict_1.default)({
             format: 'port',
             default: 4000
         }
+    },
+    cors: {
+        origin: ['*'],
+        additionalHeaders: ['cache-control', 'x-requested-with']
     }
 });
 exports.hapiPort = config.get('hapi.port');
 exports.hapiHost = config.get('hapi.host');
 config.loadFile('.env');
-// const dbport = config.get('port')
-// console.log("dbport : ", dbport)
-// const dbUser = config.get('user')
-// const dbpassword = config.get('password')
-// const dbServer = config.get('server')
-// const db = config.get('db.name')
-// export const dbConfig = { 
-//     user: dbUser, 
-//     password: dbpassword, 
-//     port: dbport,
-//     server: dbServer,
-//     database: db,
-//     options: {
-//         trustServerCertificate: true
-//     }
-// }
 exports.default = config;
