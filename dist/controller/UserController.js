@@ -52,7 +52,6 @@ class UserController {
                 const userEmail = user.email;
                 const userPassword = user.password;
                 const loginData = yield query.loginUserQuery(userEmail);
-                console.log("logindata : ", loginData);
                 if (!loginData.recordset) {
                     return res.response({ message: constants_1.LOGIN_FAILURE });
                 }
@@ -60,8 +59,7 @@ class UserController {
                 if (!validatePassword) {
                     return res.response({ message: constants_1.PASSWORD_INCORRECT });
                 }
-                const token = (0, token_1.accessToken)(loginData.recordset[0].id, loginData.recordset[0].login);
-                console.log("login val : ", loginData.login);
+                const token = (0, token_1.accessToken)(loginData.recordset[0].id, loginData.recordset[0].login, loginData.recordset[0].username);
                 return res.response({ message: constants_1.LOGIN_SUCCESS, data: loginData.recordset[0], token });
             }
             catch (error) {
