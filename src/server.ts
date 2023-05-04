@@ -10,9 +10,6 @@ export const init = async () => {
         routes: {
             cors: {
                 origin: ['*'],
-                headers: ['Authorization'], 
-                exposedHeaders: ['Accept'], 
-                additionalExposedHeaders: ['Accept'], 
                 credentials: true
             }
         }

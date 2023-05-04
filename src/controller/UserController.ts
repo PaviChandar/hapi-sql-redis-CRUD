@@ -36,7 +36,7 @@ class UserController {
         }
     }
 
-    public login = async(req: Request, res: ResponseToolkit) => {
+    public loginUser = async(req: Request, res: ResponseToolkit) => {
         try {
             const user = req.payload as IUser
             const userEmail = user.email
@@ -49,7 +49,8 @@ class UserController {
             if(!validatePassword) {
                 return res.response({ message : PASSWORD_INCORRECT })
             }
-            const token = accessToken(loginData.recordset[0].id)
+            const token = accessToken(loginData.recordset[0].id, loginData.recordset[0].login)
+            console.log("login val : ", loginData.login)
             return res.response({ message : LOGIN_SUCCESS, data : loginData.recordset[0], token })
         } catch (error) {
             console.log("Cannot login employee")

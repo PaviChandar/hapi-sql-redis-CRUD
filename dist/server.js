@@ -23,9 +23,6 @@ const init = () => __awaiter(void 0, void 0, void 0, function* () {
         routes: {
             cors: {
                 origin: ['*'],
-                headers: ['Authorization'],
-                exposedHeaders: ['Accept'],
-                additionalExposedHeaders: ['Accept'],
                 credentials: true
             }
         }

@@ -1,5 +1,4 @@
 import { Server } from "@hapi/hapi";
-import config from "../config/config";
 import EmployeeController from "../controller/EmployeeController";
 import UserController from "../controller/UserController";
 
@@ -47,7 +46,7 @@ const routes = (server : Server) => {
         server.route({
             method: 'POST',
             path: '/api/login',
-            handler: userController.login
+            handler: userController.loginUser
         })
 }
 
