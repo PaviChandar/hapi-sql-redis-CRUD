@@ -18,7 +18,8 @@ const employeeValidationSchema = (input) => {
         city: joi_1.default.string()
             .required(),
         salary: joi_1.default.number()
-            .required()
+            .required(),
+        login: joi_1.default.boolean()
     });
     return employeeSchema.validate(input);
 };

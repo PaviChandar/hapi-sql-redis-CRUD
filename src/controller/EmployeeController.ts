@@ -33,6 +33,8 @@ class EmployeeController {
     public updateEmployee = async(req : Request, res : ResponseToolkit) => {
         try {
             const validation = employeeValidationSchema(req.payload)
+            console.log("update payload : ", req.payload)
+            console.log("validation error : ", validation)
             if (validation.error?.isJoi) {
                 const errors: any = []
                 validation.error.details.forEach((detail) => {
@@ -46,7 +48,9 @@ class EmployeeController {
 
             const uid = req.params.id   
             const employee = req.payload as IEmployee
+            console.log("Employee in update : ", employee)
             const data = await query.updateEmployeeQuery(uid, employee)
+            console.log("data in update contr : ", data.recordset[0])
             return res.response(data.recordset[0]).code(SUCCESS)
         } catch (error) {
             console.log("Cannot update employee : ", error)

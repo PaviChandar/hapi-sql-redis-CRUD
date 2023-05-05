@@ -14,7 +14,8 @@ export const employeeValidationSchema = (input: Object) => {
             city: Joi.string()
                 .required(),
             salary: Joi.number()
-                .required()
+                .required(),
+            login: Joi.boolean()
         }
     )
     return employeeSchema.validate(input)
