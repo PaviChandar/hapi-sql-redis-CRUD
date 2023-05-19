@@ -40,11 +40,9 @@ class UserController {
     public loginUser = async(req: Request, res: ResponseToolkit) => {
         try {
             const user = req.payload as IUser
-            console.log("user : ", user)
             const userEmail = user.email
             const userPassword = user.password
             const loginData = await query.loginUserQuery(userEmail)
-            console.log("data : ", loginData)
             if(!loginData.recordset) {
                 return res.response({ message : LOGIN_FAILURE })
             }
@@ -53,8 +51,6 @@ class UserController {
                 return res.response({ message : PASSWORD_INCORRECT })
             }
             const token = accessToken(loginData.recordset[0].id, loginData.recordset[0].login,loginData.recordset[0].username )
-            console.log("token : ", token)
-            console.log("token decode : ", jwtDecode(token))
             return res.response({ message : LOGIN_SUCCESS, data : loginData.recordset[0], token })
         } catch (error) {
             console.log("Cannot login employee")

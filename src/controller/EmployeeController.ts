@@ -82,7 +82,9 @@ class EmployeeController {
     public deleteEmployee = async(req: Request, res: ResponseToolkit) => {
         try {
             const did = req.params.id  
+            console.log("did : ", did)
             const data = await query.deleteEmployeeQuery(did)
+            console.log("data in del : ", data)
             return res.response(data.recordset[0]).code(SUCCESS)
         } catch (error) {
             console.log("Cannot delete employee : ", error)

@@ -18,7 +18,6 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = require("../utils/token");
 const constants_1 = require("../constants/constants");
 const httpCode_1 = require("../constants/httpCode");
-const jwt_decode_1 = __importDefault(require("jwt-decode"));
 const query = new userQuery_1.UserQuery;
 class UserController {
     constructor() {
@@ -50,11 +49,9 @@ class UserController {
         this.loginUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const user = req.payload;
-                console.log("user : ", user);
                 const userEmail = user.email;
                 const userPassword = user.password;
                 const loginData = yield query.loginUserQuery(userEmail);
-                console.log("data : ", loginData);
                 if (!loginData.recordset) {
                     return res.response({ message: constants_1.LOGIN_FAILURE });
                 }
@@ -63,8 +60,6 @@ class UserController {
                     return res.response({ message: constants_1.PASSWORD_INCORRECT });
                 }
                 const token = (0, token_1.accessToken)(loginData.recordset[0].id, loginData.recordset[0].login, loginData.recordset[0].username);
-                console.log("token : ", token);
-                console.log("token decode : ", (0, jwt_decode_1.default)(token));
                 return res.response({ message: constants_1.LOGIN_SUCCESS, data: loginData.recordset[0], token });
             }
             catch (error) {

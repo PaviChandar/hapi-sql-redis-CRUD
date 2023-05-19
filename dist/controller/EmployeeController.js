@@ -90,7 +90,9 @@ class EmployeeController {
         this.deleteEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const did = req.params.id;
+                console.log("did : ", did);
                 const data = yield query.deleteEmployeeQuery(did);
+                console.log("data in del : ", data);
                 return res.response(data.recordset[0]).code(httpCode_1.SUCCESS);
             }
             catch (error) {
