@@ -23,18 +23,16 @@ class EmployeeController {
                 }
             const employee = req.payload as IEmployee
             const data = await query.addEmployeeQuery(employee)
-            return res.response(data.recordset[0]).code(SUCCESS)
+            return res.response(data.recordset).code(SUCCESS)
         } catch (error) {
             console.log("Cannot add employee : ", error)
-            return res.response({ message : "Cannot add employee "}).code(BAD_REQUEST)
+            return res.response({ message : "Cannot add employee " }).code(BAD_REQUEST)
         }
     }
 
     public updateEmployee = async(req : Request, res : ResponseToolkit) => {
         try {
             const validation = employeeValidationSchema(req.payload)
-            console.log("update payload : ", req.payload)
-            console.log("validation error : ", validation)
             if (validation.error?.isJoi) {
                 const errors: any = []
                 validation.error.details.forEach((detail) => {
@@ -48,9 +46,7 @@ class EmployeeController {
 
             const uid = req.params.id   
             const employee = req.payload as IEmployee
-            console.log("Employee in update : ", employee)
             const data = await query.updateEmployeeQuery(uid, employee)
-            console.log("data in update contr : ", data.recordset[0])
             return res.response(data.recordset[0]).code(SUCCESS)
         } catch (error) {
             console.log("Cannot update employee : ", error)
@@ -82,9 +78,7 @@ class EmployeeController {
     public deleteEmployee = async(req: Request, res: ResponseToolkit) => {
         try {
             const did = req.params.id  
-            console.log("did : ", did)
             const data = await query.deleteEmployeeQuery(did)
-            console.log("data in del : ", data)
             return res.response(data.recordset[0]).code(SUCCESS)
         } catch (error) {
             console.log("Cannot delete employee : ", error)

@@ -31,7 +31,7 @@ class EmployeeController {
                 }
                 const employee = req.payload;
                 const data = yield query.addEmployeeQuery(employee);
-                return res.response(data.recordset[0]).code(httpCode_1.SUCCESS);
+                return res.response(data.recordset).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 console.log("Cannot add employee : ", error);
@@ -42,8 +42,6 @@ class EmployeeController {
             var _b;
             try {
                 const validation = (0, validationSchema_1.employeeValidationSchema)(req.payload);
-                console.log("update payload : ", req.payload);
-                console.log("validation error : ", validation);
                 if ((_b = validation.error) === null || _b === void 0 ? void 0 : _b.isJoi) {
                     const errors = [];
                     validation.error.details.forEach((detail) => {
@@ -56,9 +54,7 @@ class EmployeeController {
                 }
                 const uid = req.params.id;
                 const employee = req.payload;
-                console.log("Employee in update : ", employee);
                 const data = yield query.updateEmployeeQuery(uid, employee);
-                console.log("data in update contr : ", data.recordset[0]);
                 return res.response(data.recordset[0]).code(httpCode_1.SUCCESS);
             }
             catch (error) {
@@ -90,9 +86,7 @@ class EmployeeController {
         this.deleteEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const did = req.params.id;
-                console.log("did : ", did);
                 const data = yield query.deleteEmployeeQuery(did);
-                console.log("data in del : ", data);
                 return res.response(data.recordset[0]).code(httpCode_1.SUCCESS);
             }
             catch (error) {
