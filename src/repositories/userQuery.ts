@@ -2,7 +2,7 @@ import { dbServer } from "../database"
 import { IEmployee, IUser } from "../interface/type"
 
 export class UserQuery {
-    public pool : any
+    public pool: any
 
     constructor() {
         (async() => {

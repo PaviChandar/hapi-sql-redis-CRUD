@@ -20,12 +20,20 @@ class EmployeeController {
             try {
                 const validation = (0, validationSchema_1.employeeValidationSchema)(req.payload);
                 if ((_a = validation.error) === null || _a === void 0 ? void 0 : _a.isJoi) {
-                    const errors = [];
+                    const errors = {
+                        path: [""],
+                        message: ""
+                    };
+                    // const errors: any = []
                     validation.error.details.forEach((detail) => {
                         let error = {
                             [detail.path.toString()]: detail.message
                         };
+                        console.log("error type : ", typeof error);
+                        console.log("path type : ", detail.path);
+                        console.log("msg type : ", typeof detail.message);
                         errors.push(error);
+                        console.log("errors type : ", errors);
                     });
                     return errors;
                 }
@@ -35,7 +43,7 @@ class EmployeeController {
             }
             catch (error) {
                 console.log("Cannot add employee : ", error);
-                return res.response({ message: "Cannot add employee " }).code(httpCode_1.BAD_REQUEST);
+                return res.response({ message: "Cannot add employee" }).code(httpCode_1.BAD_REQUEST);
             }
         });
         this.updateEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {

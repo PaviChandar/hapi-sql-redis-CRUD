@@ -12,9 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const validationSchema_1 = require("../validation/validationSchema");
 const userQuery_1 = require("../repositories/userQuery");
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = require("../utils/token");
 const constants_1 = require("../constants/constants");
 const httpCode_1 = require("../constants/httpCode");

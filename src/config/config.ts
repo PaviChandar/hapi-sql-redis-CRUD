@@ -1,6 +1,6 @@
 import convict from "convict"
 
-const config: any = convict( 
+const config = convict( 
     {
         db: {
             server: {

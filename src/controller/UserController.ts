@@ -1,12 +1,12 @@
 import { Request, ResponseToolkit } from "@hapi/hapi"
+import bcrypt from "bcryptjs"
+
 import { IUser } from "../interface/type"
 import { userValidationSchema } from "../validation/validationSchema"
 import { UserQuery } from "../repositories/userQuery"
-import bcrypt from "bcryptjs"
 import { accessToken } from "../utils/token"
 import { LOGIN_FAILURE, LOGIN_SUCCESS, PASSWORD_INCORRECT } from "../constants/constants"
 import { SUCCESS, BAD_REQUEST } from "../constants/httpCode" 
-import jwtDecode from "jwt-decode"
 
 const query = new UserQuery
 

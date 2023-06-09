@@ -1,8 +1,14 @@
 import { Request, ResponseToolkit } from "@hapi/hapi"
+
 import { SUCCESS, BAD_REQUEST } from "../constants/httpCode"
 import { IEmployee } from "../interface/type"
 import { UserQuery } from "../repositories/userQuery"
 import { employeeValidationSchema } from "../validation/validationSchema"
+
+interface ErrorType {
+    path: [string]
+    message: string
+}
 
 const query = new UserQuery
 
@@ -12,12 +18,16 @@ class EmployeeController {
         try {
             const validation = employeeValidationSchema(req.payload)
                 if (validation.error?.isJoi) {
+                    // const errors: ErrorType = {
+                    //     path: [""],
+                    //     message: ""
+                    // }
                     const errors: any = []
                     validation.error.details.forEach((detail) => {
-                        let error: any = {
+                        let error: object = {
                             [detail.path.toString()]: detail.message
                         }
-                            errors.push(error)
+                        errors.push(error)
                     })            
                     return errors
                 }
@@ -26,7 +36,7 @@ class EmployeeController {
             return res.response(data.recordset).code(SUCCESS)
         } catch (error) {
             console.log("Cannot add employee : ", error)
-            return res.response({ message : "Cannot add employee " }).code(BAD_REQUEST)
+            return res.response({ message : "Cannot add employee" }).code(BAD_REQUEST)
         }
     }
 
@@ -36,7 +46,7 @@ class EmployeeController {
             if (validation.error?.isJoi) {
                 const errors: any = []
                 validation.error.details.forEach((detail) => {
-                    let error: any = {
+                    let error: object = { 
                         [detail.path.toString()]: detail.message
                     }
                     errors.push(error)
