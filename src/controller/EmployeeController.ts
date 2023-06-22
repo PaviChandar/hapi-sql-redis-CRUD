@@ -18,10 +18,6 @@ class EmployeeController {
         try {
             const validation = employeeValidationSchema(req.payload)
                 if (validation.error?.isJoi) {
-                    // const errors: ErrorType = {
-                    //     path: [""],
-                    //     message: ""
-                    // }
                     const errors: any = []
                     validation.error.details.forEach((detail) => {
                         let error: object = {

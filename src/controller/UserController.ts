@@ -18,7 +18,7 @@ class UserController {
             if (validation.error) {
                 const errors: any = []
                 validation.error.details.forEach((detail) => {
-                    let error: any = {
+                    let error: object = {
                         [detail.path.toString()]: detail.message
                     }
                         errors.push(error)
