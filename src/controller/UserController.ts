@@ -43,18 +43,22 @@ class UserController {
             const userEmail = user.email
             const userPassword = user.password
             const loginData = await query.loginUserQuery(userEmail)
+            // throw "Login failed"
             if(!loginData.recordset) {
-                return res.response({ message : LOGIN_FAILURE })
+                // return res.response({ message : LOGIN_FAILURE })
+                throw LOGIN_FAILURE
             }
             const validatePassword = await bcrypt.compare(userPassword, loginData.recordset[0].userpassword)
             if(!validatePassword) {
-                return res.response({ message : PASSWORD_INCORRECT })
+                // return res.response({ message : PASSWORD_INCORRECT })
+                throw PASSWORD_INCORRECT
             }
             const token = accessToken(loginData.recordset[0].id, loginData.recordset[0].login,loginData.recordset[0].username )
             return res.response({ message : LOGIN_SUCCESS, data : loginData.recordset[0], token })
         } catch (error) {
-            console.log("Cannot login employee")
-            return res.response({ message : "Cannot login user "}).code(BAD_REQUEST)
+            console.log("Cannot login employee", error)
+
+            return res.response({ message : error }).code(BAD_REQUEST)
         }
     }
 }
