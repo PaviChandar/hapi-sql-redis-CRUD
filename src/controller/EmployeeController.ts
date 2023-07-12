@@ -1,4 +1,5 @@
 import { Request, ResponseToolkit } from "@hapi/hapi"
+import { ADD_SUCCESS, DELETE_SUCCESS, EDIT_SUCCESS } from "../constants/constants"
 
 import { SUCCESS, BAD_REQUEST } from "../constants/httpCode"
 import { IEmployee } from "../interface/type"
@@ -25,14 +26,15 @@ class EmployeeController {
                         }
                         errors.push(error)
                     })            
-                    return errors
+                    throw errors
                 }
             const employee = req.payload as IEmployee
             const data = await query.addEmployeeQuery(employee)
-            return res.response(data.recordset).code(SUCCESS)
+            console.log("data : ", data)
+            console.log("emp : ", employee)
+            return res.response({ message: ADD_SUCCESS, data: data.recordset }).code(SUCCESS)
         } catch (error) {
-            console.log("Cannot add employee : ", error)
-            return res.response({ message : "Cannot add employee" }).code(BAD_REQUEST)
+            return res.response({ message : error }).code(BAD_REQUEST)
         }
     }
 
@@ -47,16 +49,15 @@ class EmployeeController {
                     }
                     errors.push(error)
                 })    
-                return errors
+                throw errors
             }
 
             const uid = req.params.id   
             const employee = req.payload as IEmployee
             const data = await query.updateEmployeeQuery(uid, employee)
-            return res.response(data.recordset[0]).code(SUCCESS)
+            return res.response({message: EDIT_SUCCESS, data: data.recordset[0]}).code(SUCCESS)
         } catch (error) {
-            console.log("Cannot update employee : ", error)
-            return res.response({ message : "Cannot update employee "}).code(BAD_REQUEST)
+            return res.response({ message : error }).code(BAD_REQUEST)
         }
     }
 
@@ -66,8 +67,7 @@ class EmployeeController {
             const data = await query.getSingleUserQuery(eid)
             return res.response(data.recordset[0]).code(SUCCESS)
         } catch (error) {
-            console.log("Cannot get employee : ", error)
-            return res.response({ message : "Cannot get employee "}).code(BAD_REQUEST)
+            return res.response({ message : "Cannot get employee"}).code(BAD_REQUEST)
         }
     }
 
@@ -82,13 +82,13 @@ class EmployeeController {
     }
 
     public deleteEmployee = async(req: Request, res: ResponseToolkit) => {
+        console.log("inside del emp")
         try {
             const did = req.params.id  
             const data = await query.deleteEmployeeQuery(did)
-            return res.response(data.recordset[0]).code(SUCCESS)
-        } catch (error) {
-            console.log("Cannot delete employee : ", error)
-            return res.response({ message : "Cannot delete employee " }).code(BAD_REQUEST)
+            return res.response({ message:DELETE_SUCCESS, data: data.recordset }).code(SUCCESS)
+        } catch(error) {   
+            return res.response({ message : "Cannot delete employee" }).code(BAD_REQUEST)
         }
     }
 }

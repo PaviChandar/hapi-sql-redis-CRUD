@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SERVER_ERROR = exports.PASSWORD_INCORRECT = exports.LOGIN_FAILURE = exports.LOGIN_SUCCESS = void 0;
+exports.DELETE_SUCCESS = exports.EDIT_SUCCESS = exports.ADD_SUCCESS = exports.REGISTER_SUCCESS = exports.SERVER_ERROR = exports.PASSWORD_INCORRECT = exports.LOGIN_FAILURE = exports.LOGIN_SUCCESS = void 0;
 exports.LOGIN_SUCCESS = 'User logged-in Successfully';
 exports.LOGIN_FAILURE = 'Login failed! Email not found';
 exports.PASSWORD_INCORRECT = 'Incorrect Password';
 exports.SERVER_ERROR = 'Internal Server error';
+exports.REGISTER_SUCCESS = 'User registered successfully';
+exports.ADD_SUCCESS = 'Employee added sucessfully';
+exports.EDIT_SUCCESS = 'Employee updated successfully';
+exports.DELETE_SUCCESS = 'Employee deleted successfully';

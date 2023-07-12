@@ -10,7 +10,7 @@ export class UserQuery {
         })()
     }
 
-    public async getSingleUserQuery(eid : number) {
+    public async getSingleUserQuery(eid: number) {
         return await this.pool.query('exec getEmployeeById @eid="' + eid + '"')
     }
 
@@ -18,29 +18,29 @@ export class UserQuery {
         return await this.pool.query('exec getAllEmployee')
     }
 
-    public async addEmployeeQuery(userData : IEmployee) {
+    public async addEmployeeQuery(userData: IEmployee) {
         return await this.pool.query(
             'exec insertEmployee @id="' + userData.id + '", @name="' + userData.name + '", @age="' + userData.age + '", @city="' + userData.city + '", @salary="' + userData.salary + '"'
         )
     }
 
-    public async deleteEmployeeQuery(did : number) {
+    public async deleteEmployeeQuery(did: number) {
         return await this.pool.query('exec deleteEmployeeById @did="' + did + '"')
     }
 
-    public async updateEmployeeQuery(uid : number, userData : IEmployee) {
+    public async updateEmployeeQuery(uid: number, userData: IEmployee) {
         return await this.pool.query(
             'exec updateEmployeeById @uid="' + uid + '", @uname="' + userData.name + '", @uage="' + userData.age + '", @ucity="' + userData.city + '", @usalary="' + userData.salary + '"'
         )
     }
 
-    public async addUserQuery(data : IUser, hashedPassword : string) {
+    public async addUserQuery(data: IUser, hashedPassword: string) {
         return await this.pool.query(
             'exec insertUser @iUsername="' + data.username + '", @iEmail="' + data.email + '", @iPassword="' + hashedPassword + '"     '
         )
     }
 
-    public async loginUserQuery (email : string) {
+    public async loginUserQuery (email: string) {
         return await this.pool.query(
             'exec loginUser @lemail="' + email + '" '
         )

@@ -32,18 +32,19 @@ class UserController {
                         };
                         errors.push(error);
                     });
-                    return errors;
+                    throw errors;
                 }
                 const user = req.payload;
                 const userpw = user.password;
                 const saltRounds = 10;
                 const hashedpassword = yield bcryptjs_1.default.hash(userpw, saltRounds);
                 const data = yield query.addUserQuery(user, hashedpassword);
-                return res.response(data.recordset[0]).code(httpCode_1.SUCCESS);
+                console.log(data);
+                return res.response({ message: constants_1.REGISTER_SUCCESS, data: data.recordset[0] }).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 console.log("Cannot add user : ", error);
-                return res.response({ message: "Cannot add user " }).code(httpCode_1.BAD_REQUEST);
+                return res.response({ message: error }).code(httpCode_1.BAD_REQUEST);
             }
         });
         this.loginUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -52,14 +53,11 @@ class UserController {
                 const userEmail = user.email;
                 const userPassword = user.password;
                 const loginData = yield query.loginUserQuery(userEmail);
-                // throw "Login failed"
                 if (!loginData.recordset) {
-                    // return res.response({ message : LOGIN_FAILURE })
                     throw constants_1.LOGIN_FAILURE;
                 }
                 const validatePassword = yield bcryptjs_1.default.compare(userPassword, loginData.recordset[0].userpassword);
                 if (!validatePassword) {
-                    // return res.response({ message : PASSWORD_INCORRECT })
                     throw constants_1.PASSWORD_INCORRECT;
                 }
                 const token = (0, token_1.accessToken)(loginData.recordset[0].id, loginData.recordset[0].login, loginData.recordset[0].username);

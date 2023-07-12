@@ -5,7 +5,7 @@ import { IUser } from "../interface/type"
 import { userValidationSchema } from "../validation/validationSchema"
 import { UserQuery } from "../repositories/userQuery"
 import { accessToken } from "../utils/token"
-import { LOGIN_FAILURE, LOGIN_SUCCESS, PASSWORD_INCORRECT } from "../constants/constants"
+import { LOGIN_FAILURE, LOGIN_SUCCESS, PASSWORD_INCORRECT, REGISTER_SUCCESS } from "../constants/constants"
 import { SUCCESS, BAD_REQUEST } from "../constants/httpCode" 
 
 const query = new UserQuery
@@ -23,17 +23,18 @@ class UserController {
                     }
                         errors.push(error)
                 })            
-                return errors
+                throw errors
             }
             const user = req.payload as IUser
             const userpw = user.password
             const saltRounds = 10
             const hashedpassword = await bcrypt.hash(userpw, saltRounds)
             const data = await query.addUserQuery(user, hashedpassword)
-            return res.response(data.recordset[0]).code(SUCCESS)    
+            console.log(data)
+            return res.response({ message: REGISTER_SUCCESS , data:data.recordset[0] }).code(SUCCESS)    
         } catch (error) {
             console.log("Cannot add user : ", error)
-            return res.response({ message : "Cannot add user "}).code(BAD_REQUEST)
+            return res.response({ message : error }).code(BAD_REQUEST)
         }
     }
 
@@ -43,14 +44,12 @@ class UserController {
             const userEmail = user.email
             const userPassword = user.password
             const loginData = await query.loginUserQuery(userEmail)
-            // throw "Login failed"
+           
             if(!loginData.recordset) {
-                // return res.response({ message : LOGIN_FAILURE })
                 throw LOGIN_FAILURE
             }
             const validatePassword = await bcrypt.compare(userPassword, loginData.recordset[0].userpassword)
             if(!validatePassword) {
-                // return res.response({ message : PASSWORD_INCORRECT })
                 throw PASSWORD_INCORRECT
             }
             const token = accessToken(loginData.recordset[0].id, loginData.recordset[0].login,loginData.recordset[0].username )
