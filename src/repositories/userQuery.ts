@@ -46,4 +46,10 @@ export class UserQuery {
         )
     }
 
+    public async updateUserQuery(uid:number, data: IUser) {
+        return await this.pool.query(
+            'exec updateUserById @usid="'+uid+'", @usname="' +data.username+ '", @uspassword="'+data.password+'" '
+        )
+    }
+
 }

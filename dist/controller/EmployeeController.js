@@ -32,8 +32,6 @@ class EmployeeController {
                 }
                 const employee = req.payload;
                 const data = yield query.addEmployeeQuery(employee);
-                console.log("data : ", data);
-                console.log("emp : ", employee);
                 return res.response({ message: constants_1.ADD_SUCCESS, data: data.recordset }).code(httpCode_1.SUCCESS);
             }
             catch (error) {
@@ -57,7 +55,7 @@ class EmployeeController {
                 const uid = req.params.id;
                 const employee = req.payload;
                 const data = yield query.updateEmployeeQuery(uid, employee);
-                return res.response({ message: constants_1.EDIT_SUCCESS, data: data.recordset[0] }).code(httpCode_1.SUCCESS);
+                return res.response({ message: constants_1.EDIT_SUCCESS, data: data.recordset }).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 return res.response({ message: error }).code(httpCode_1.BAD_REQUEST);

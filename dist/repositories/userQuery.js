@@ -52,5 +52,10 @@ class UserQuery {
             return yield this.pool.query('exec loginUser @lemail="' + email + '" ');
         });
     }
+    updateUserQuery(uid, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.pool.query('exec updateUserById @usid="' + uid + '", @usname="' + data.username + '", @uspassword="' + data.password + '" ');
+        });
+    }
 }
 exports.UserQuery = UserQuery;

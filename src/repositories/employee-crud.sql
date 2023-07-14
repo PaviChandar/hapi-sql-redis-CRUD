@@ -22,7 +22,7 @@ BEGIN
 END
 
 ALTER PROCEDURE updateEmployeeById(@uid int, @uname varchar(50), @uage int, @ucity varchar(50), @usalary int)
-AS
+AS 
 BEGIN
 	update employee
 	set name = @uname, age = @uage, city = @ucity, salary = @usalary where id = @uid

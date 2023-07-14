@@ -52,7 +52,7 @@ class UserController {
             if(!validatePassword) {
                 throw PASSWORD_INCORRECT
             }
-            const token = accessToken(loginData.recordset[0].id, loginData.recordset[0].login,loginData.recordset[0].username )
+            const token = accessToken(loginData.recordset[0].id, loginData.recordset[0].login,loginData.recordset[0].username)
             return res.response({ message : LOGIN_SUCCESS, data : loginData.recordset[0], token })
         } catch (error) {
             console.log("Cannot login employee", error)

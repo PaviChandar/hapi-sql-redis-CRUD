@@ -41,3 +41,20 @@ END
 
 EXEC loginUser @lemail = 'snehasaravana@gmail.com'
 EXEC loginUser @lemail = 'pavi@gmail.com'
+
+
+CREATE PROCEDURE updateUserById
+AS
+BEGIN
+	DECLARE @usid int
+	SELECT * FROM Users WHERE id = @usid
+END
+
+ALTER PROCEDURE updateUserById(@usid int,@usname nvarchar(50), @uspassword nvarchar(100) )
+AS
+BEGIN
+	UPDATE Users
+	SET username = @usname, userpassword = @uspassword WHERE id=@usid
+END
+
+EXEC updateUserById @usid = 35, @usname = 'testcase', @uspassword = 'testcase123'

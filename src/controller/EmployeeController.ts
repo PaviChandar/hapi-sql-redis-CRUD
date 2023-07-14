@@ -30,8 +30,6 @@ class EmployeeController {
                 }
             const employee = req.payload as IEmployee
             const data = await query.addEmployeeQuery(employee)
-            console.log("data : ", data)
-            console.log("emp : ", employee)
             return res.response({ message: ADD_SUCCESS, data: data.recordset }).code(SUCCESS)
         } catch (error) {
             return res.response({ message : error }).code(BAD_REQUEST)
@@ -55,7 +53,7 @@ class EmployeeController {
             const uid = req.params.id   
             const employee = req.payload as IEmployee
             const data = await query.updateEmployeeQuery(uid, employee)
-            return res.response({message: EDIT_SUCCESS, data: data.recordset[0]}).code(SUCCESS)
+            return res.response({ message: EDIT_SUCCESS, data: data.recordset }).code(SUCCESS)
         } catch (error) {
             return res.response({ message : error }).code(BAD_REQUEST)
         }
