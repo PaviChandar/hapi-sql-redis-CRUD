@@ -43,5 +43,15 @@ const routes = (server) => {
         path: '/api/login',
         handler: userController.loginUser
     });
+    server.route({
+        method: 'PUT',
+        path: '/api/user/{id}',
+        handler: userController.editUser
+    });
+    server.route({
+        method: 'GET',
+        path: '/api/user/{id}',
+        handler: userController.viewUser
+    });
 };
 exports.default = routes;

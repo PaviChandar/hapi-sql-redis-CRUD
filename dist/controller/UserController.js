@@ -39,7 +39,6 @@ class UserController {
                 const saltRounds = 10;
                 const hashedpassword = yield bcryptjs_1.default.hash(userpw, saltRounds);
                 const data = yield query.addUserQuery(user, hashedpassword);
-                console.log(data);
                 return res.response({ message: constants_1.REGISTER_SUCCESS, data: data.recordset[0] }).code(httpCode_1.SUCCESS);
             }
             catch (error) {
@@ -66,6 +65,41 @@ class UserController {
             catch (error) {
                 console.log("Cannot login employee", error);
                 return res.response({ message: error }).code(httpCode_1.BAD_REQUEST);
+            }
+        });
+        this.editUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const validation = (0, validationSchema_1.userValidationSchema)(req.payload);
+                if (validation.error) {
+                    const errors = [];
+                    validation.error.details.forEach((detail) => {
+                        let error = {
+                            [detail.path.toString()]: detail.message
+                        };
+                        errors.push(error);
+                    });
+                    throw errors;
+                }
+                const usid = req.params.id;
+                const user = req.payload;
+                const data = yield query.updateUserQuery(usid, user);
+                return res.response({ message: "User updated successfully", data: data.recordset[0] }).code(httpCode_1.SUCCESS);
+            }
+            catch (error) {
+                console.log("Cannot update user : ", error);
+                return res.response({ message: error }).code(httpCode_1.BAD_REQUEST);
+            }
+        });
+        this.viewUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const vid = req.params.id;
+                console.log("id : ", vid);
+                const data = yield query.viewUserQuery(vid);
+                console.log("data : ", data.recordset);
+                return res.response({ message: "User retreived successfully", data: data.recordset }).code(httpCode_1.SUCCESS);
+            }
+            catch (error) {
+                return res.response({ message: "Cannot get user " }).code(httpCode_1.BAD_REQUEST);
             }
         });
     }

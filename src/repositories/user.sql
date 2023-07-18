@@ -58,3 +58,19 @@ BEGIN
 END
 
 EXEC updateUserById @usid = 35, @usname = 'testcase', @uspassword = 'testcase123'
+
+
+CREATE PROCEDURE getUserById(@vid int)
+AS
+BEGIN
+	IF EXISTS (select email from Users where id = @vid)
+		BEGIN
+			select username, email, userpassword from Users where id = @vid
+		END
+	ELSE 
+		BEGIN
+		select username, email, userpassword from Users where id = 2
+		END
+END
+
+EXEC getUserById @vid = 9

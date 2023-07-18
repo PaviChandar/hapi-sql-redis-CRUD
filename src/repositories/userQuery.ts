@@ -52,4 +52,8 @@ export class UserQuery {
         )
     }
 
+    public async viewUserQuery(vid: number) {
+        return await this.pool.query('exec getUserById @vid="' +vid+ '"')
+    }
+
 }
