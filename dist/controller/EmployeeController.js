@@ -73,7 +73,7 @@ class EmployeeController {
         });
         this.getEmployees = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield query.getUsersQuery();
+                const data = yield query.getEmployeesQuery();
                 return res.response({ data: data.recordset }).code(httpCode_1.SUCCESS);
             }
             catch (error) {

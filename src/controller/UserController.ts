@@ -7,6 +7,7 @@ import { UserQuery } from "../repositories/userQuery"
 import { accessToken } from "../utils/token"
 import { LOGIN_FAILURE, LOGIN_SUCCESS, PASSWORD_INCORRECT, REGISTER_SUCCESS } from "../constants/constants"
 import { SUCCESS, BAD_REQUEST } from "../constants/httpCode" 
+import jwtDecode from "jwt-decode"
 
 const query = new UserQuery
 
@@ -51,11 +52,10 @@ class UserController {
             if(!validatePassword) {
                 throw PASSWORD_INCORRECT
             }
-            const token = accessToken(loginData.recordset[0].id, loginData.recordset[0].login,loginData.recordset[0].username)
+            const token = accessToken(loginData.recordset[0].Id,loginData.recordset[0].login,loginData.recordset[0].username)
             return res.response({ message : LOGIN_SUCCESS, data : loginData.recordset[0], token })
         } catch (error) {
             console.log("Cannot login employee", error)
-
             return res.response({ message : error }).code(BAD_REQUEST)
         }
     }
@@ -74,9 +74,12 @@ class UserController {
                 throw errors
             }
             const usid = req.params.id
+            console.log("id : ", usid)
             const user = req.payload as IUser
+            console.log("user : ", user)
             const data = await query.updateUserQuery(usid,user)
-            return res.response({ message: "User updated successfully" , data:data.recordset[0] }).code(SUCCESS)    
+            console.log("data : ", data)
+            return res.response({ message: "User updated successfully" , data:data.recordset }).code(SUCCESS)    
         } catch (error) {
             console.log("Cannot update user : ", error)
             return res.response({ message : error }).code(BAD_REQUEST)
@@ -92,6 +95,16 @@ class UserController {
             return res.response({ message:"User retreived successfully", data:data.recordset }).code(SUCCESS)
         } catch(error) {
             return res.response({ message: "Cannot get user "}).code(BAD_REQUEST)
+        }
+    }
+
+    public getUsers = async(req: Request, res : ResponseToolkit) => {
+        try {
+            const data = await query.getUsersQuery()
+            return res.response({ data: data.recordset }).code(SUCCESS)
+        } catch(error) {
+            console.log("Error in getEmployee : ", error)
+            return res.response({ message : "Cannot get employees "}).code(BAD_REQUEST)
         }
     }
 }

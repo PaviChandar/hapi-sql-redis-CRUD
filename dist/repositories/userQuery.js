@@ -22,7 +22,7 @@ class UserQuery {
             return yield this.pool.query('exec getEmployeeById @eid="' + eid + '"');
         });
     }
-    getUsersQuery() {
+    getEmployeesQuery() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.pool.query('exec getAllEmployee');
         });
@@ -60,6 +60,11 @@ class UserQuery {
     viewUserQuery(vid) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.pool.query('exec getUserById @vid="' + vid + '"');
+        });
+    }
+    getUsersQuery() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.pool.query('exec getAllUsers');
         });
     }
 }

@@ -71,7 +71,7 @@ class EmployeeController {
 
     public getEmployees = async(req: Request, res : ResponseToolkit) => {
         try {
-            const data = await query.getUsersQuery()
+            const data = await query.getEmployeesQuery()
             return res.response({ data: data.recordset }).code(SUCCESS)
         } catch(error) {
             console.log("Error in getEmployee : ", error)

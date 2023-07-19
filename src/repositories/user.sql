@@ -31,7 +31,7 @@ AS
 BEGIN
 	IF EXISTS(select email from Users where email = @lemail)
 		BEGIN
-			select username,email,userpassword,login from Users where email = @lemail
+			select Id,username,email,userpassword,login from Users where email = @lemail
 		END
 	ELSE
 		BEGIN
@@ -74,3 +74,12 @@ BEGIN
 END
 
 EXEC getUserById @vid = 9
+
+
+CREATE PROCEDURE getAllUsers
+AS
+BEGIN
+	select * from Users
+END
+
+EXEC getAllUsers

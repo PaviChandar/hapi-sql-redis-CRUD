@@ -14,7 +14,7 @@ export class UserQuery {
         return await this.pool.query('exec getEmployeeById @eid="' + eid + '"')
     }
 
-    public async getUsersQuery() {
+    public async getEmployeesQuery() {
         return await this.pool.query('exec getAllEmployee')
     }
 
@@ -54,6 +54,10 @@ export class UserQuery {
 
     public async viewUserQuery(vid: number) {
         return await this.pool.query('exec getUserById @vid="' +vid+ '"')
+    }
+
+    public async getUsersQuery() {
+        return await this.pool.query('exec getAllUsers')
     }
 
 }

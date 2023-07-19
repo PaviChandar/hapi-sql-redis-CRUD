@@ -59,7 +59,7 @@ class UserController {
                 if (!validatePassword) {
                     throw constants_1.PASSWORD_INCORRECT;
                 }
-                const token = (0, token_1.accessToken)(loginData.recordset[0].id, loginData.recordset[0].login, loginData.recordset[0].username);
+                const token = (0, token_1.accessToken)(loginData.recordset[0].Id, loginData.recordset[0].login, loginData.recordset[0].username);
                 return res.response({ message: constants_1.LOGIN_SUCCESS, data: loginData.recordset[0], token });
             }
             catch (error) {
@@ -81,9 +81,12 @@ class UserController {
                     throw errors;
                 }
                 const usid = req.params.id;
+                console.log("id : ", usid);
                 const user = req.payload;
+                console.log("user : ", user);
                 const data = yield query.updateUserQuery(usid, user);
-                return res.response({ message: "User updated successfully", data: data.recordset[0] }).code(httpCode_1.SUCCESS);
+                console.log("data : ", data);
+                return res.response({ message: "User updated successfully", data: data.recordset }).code(httpCode_1.SUCCESS);
             }
             catch (error) {
                 console.log("Cannot update user : ", error);
@@ -100,6 +103,16 @@ class UserController {
             }
             catch (error) {
                 return res.response({ message: "Cannot get user " }).code(httpCode_1.BAD_REQUEST);
+            }
+        });
+        this.getUsers = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const data = yield query.getUsersQuery();
+                return res.response({ data: data.recordset }).code(httpCode_1.SUCCESS);
+            }
+            catch (error) {
+                console.log("Error in getEmployee : ", error);
+                return res.response({ message: "Cannot get employees " }).code(httpCode_1.BAD_REQUEST);
             }
         });
     }

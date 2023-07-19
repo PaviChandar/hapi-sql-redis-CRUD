@@ -61,6 +61,12 @@ const routes = (server : Server) => {
             path:'/api/user/{id}',
             handler: userController.viewUser 
         })
+
+        server.route({
+            method:'GET',
+            path:'/api/users',
+            handler: userController.getUsers 
+        })
 }
 
 export default routes
