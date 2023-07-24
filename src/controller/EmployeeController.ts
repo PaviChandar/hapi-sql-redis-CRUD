@@ -80,7 +80,6 @@ class EmployeeController {
     }
 
     public deleteEmployee = async(req: Request, res: ResponseToolkit) => {
-        console.log("inside del emp")
         try {
             const did = req.params.id  
             const data = await query.deleteEmployeeQuery(did)

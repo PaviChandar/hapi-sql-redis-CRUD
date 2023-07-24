@@ -82,7 +82,6 @@ class EmployeeController {
             }
         });
         this.deleteEmployee = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            console.log("inside del emp");
             try {
                 const did = req.params.id;
                 const data = yield query.deleteEmployeeQuery(did);
