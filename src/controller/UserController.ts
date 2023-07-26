@@ -89,9 +89,7 @@ class UserController {
     public viewUser = async(req : Request, res : ResponseToolkit) => {
         try {
             const vid = req.params.id
-            console.log("id : ", vid)
             const data = await query.viewUserQuery(vid)
-            console.log("data : ", data.recordset)
             return res.response({ message:"User retreived successfully", data:data.recordset }).code(SUCCESS)
         } catch(error) {
             return res.response({ message: "Cannot get user "}).code(BAD_REQUEST)

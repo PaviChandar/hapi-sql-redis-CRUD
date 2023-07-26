@@ -96,9 +96,7 @@ class UserController {
         this.viewUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const vid = req.params.id;
-                console.log("id : ", vid);
                 const data = yield query.viewUserQuery(vid);
-                console.log("data : ", data.recordset);
                 return res.response({ message: "User retreived successfully", data: data.recordset }).code(httpCode_1.SUCCESS);
             }
             catch (error) {
