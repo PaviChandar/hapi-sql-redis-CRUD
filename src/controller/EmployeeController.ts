@@ -6,11 +6,6 @@ import { IEmployee } from "../interface/type"
 import { UserQuery } from "../repositories/userQuery"
 import { employeeValidationSchema } from "../validation/validationSchema"
 
-interface ErrorType {
-    path: [string]
-    message: string
-}
-
 const query = new UserQuery
 
 class EmployeeController {

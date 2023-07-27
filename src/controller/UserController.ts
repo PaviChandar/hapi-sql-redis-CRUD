@@ -7,7 +7,6 @@ import { UserQuery } from "../repositories/userQuery"
 import { accessToken } from "../utils/token"
 import { LOGIN_FAILURE, LOGIN_SUCCESS, PASSWORD_INCORRECT, REGISTER_SUCCESS } from "../constants/constants"
 import { SUCCESS, BAD_REQUEST } from "../constants/httpCode" 
-import jwtDecode from "jwt-decode"
 
 const query = new UserQuery
 
