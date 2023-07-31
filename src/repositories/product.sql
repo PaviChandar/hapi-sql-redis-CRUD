@@ -53,15 +53,16 @@ create procedure insertBrand
 @bname varchar(50),
 @bclass nvarchar(50),
 @bmodel int,
-@cid int
+@cid int,
+@bprice int
 )
 as
 begin
-	insert into brand(name,class,model,category_id)
-	values(@bname,@bclass,@bmodel,@cid)
+	insert into brand(name,class,model,category_id,price)
+	values(@bname,@bclass,@bmodel,@cid,@bprice)
 end
 
-
+-- before price col
 exec insertBrand @bname = 'Samsung',@bclass= 'Galaxy J4', @bmodel = 2018,@cid=1
 exec insertBrand @bname = 'One Plus',@bclass= 'Nord', @bmodel = 2022,@cid=1
 exec insertBrand @bname = 'Vivo',@bclass= 'V19', @bmodel = 2019,@cid=1
