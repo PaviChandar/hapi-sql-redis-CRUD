@@ -33,6 +33,9 @@ export const userValidationSchema = (input: Object) => {
             password: Joi.string()
                     .min(5)
                     .required(),
+            confirmpassword: Joi.string()
+                    .min(5)
+                    .required()
         }
     )
     return userSchema.validate(input)

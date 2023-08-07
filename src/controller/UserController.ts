@@ -61,17 +61,17 @@ class UserController {
 
     public editUser = async(req : Request, res : ResponseToolkit) => {
         try {
-            const validation = userValidationSchema(req.payload)
-            if (validation.error) {
-                const errors: any = []
-                validation.error.details.forEach((detail) => {
-                    let error: object = {
-                        [detail.path.toString()]: detail.message
-                    }
-                        errors.push(error)
-                })            
-                throw errors
-            }
+            // const validation = userValidationSchema(req.payload)
+            // if (validation.error) {
+            //     const errors: any = []
+            //     validation.error.details.forEach((detail) => {
+            //         let error: object = {
+            //             [detail.path.toString()]: detail.message
+            //         }
+            //             errors.push(error)
+            //     })            
+            //     throw errors
+            // }
             const usid = req.params.id
             console.log("id : ", usid)
             const user = req.payload as IUser

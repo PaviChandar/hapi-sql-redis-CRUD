@@ -69,17 +69,17 @@ class UserController {
         });
         this.editUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const validation = (0, validationSchema_1.userValidationSchema)(req.payload);
-                if (validation.error) {
-                    const errors = [];
-                    validation.error.details.forEach((detail) => {
-                        let error = {
-                            [detail.path.toString()]: detail.message
-                        };
-                        errors.push(error);
-                    });
-                    throw errors;
-                }
+                // const validation = userValidationSchema(req.payload)
+                // if (validation.error) {
+                //     const errors: any = []
+                //     validation.error.details.forEach((detail) => {
+                //         let error: object = {
+                //             [detail.path.toString()]: detail.message
+                //         }
+                //             errors.push(error)
+                //     })            
+                //     throw errors
+                // }
                 const usid = req.params.id;
                 console.log("id : ", usid);
                 const user = req.payload;
