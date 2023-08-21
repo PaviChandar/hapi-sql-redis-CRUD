@@ -35,6 +35,9 @@ const userValidationSchema = (input) => {
         password: joi_1.default.string()
             .min(5)
             .required(),
+        confirmpassword: joi_1.default.string()
+            .min(5)
+            .required()
     });
     return userSchema.validate(input);
 };
